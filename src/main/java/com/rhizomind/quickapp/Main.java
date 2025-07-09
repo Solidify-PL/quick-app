@@ -4,7 +4,7 @@ import picocli.CommandLine;
 
 @CommandLine.Command(
         name = "qa",
-        subcommands = {GenerateCommand.class, PackageCommand.class},
+        subcommands = {GenerateCommand.class, PackageCommand.class, IndexCommand.class},
         description = "QuickApp CLI tool"
 )
 public class Main implements Runnable {

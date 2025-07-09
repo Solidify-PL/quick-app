@@ -16,6 +16,34 @@
           "com.rhizomind.quickapp.ValuesConfig",
           "java.util.Set"
         ]
+      },
+      {
+        "name": "getDescription",
+        "parameterTypes": []
+      },
+      {
+        "name": "getEngine",
+        "parameterTypes": []
+      },
+      {
+        "name": "getExcludeFromProcessingRegexps",
+        "parameterTypes": []
+      },
+      {
+        "name": "getName",
+        "parameterTypes": []
+      },
+      {
+        "name": "getTags",
+        "parameterTypes": []
+      },
+      {
+        "name": "getValues",
+        "parameterTypes": []
+      },
+      {
+        "name": "getVersion",
+        "parameterTypes": []
       }
     ]
   },
@@ -27,6 +55,14 @@
     "methods": [
       {
         "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getDefaults",
+        "parameterTypes": []
+      },
+      {
+        "name": "getSchema",
         "parameterTypes": []
       },
       {
@@ -54,15 +90,23 @@
         "parameterTypes": []
       },
       {
-        "name": "setImage",
-        "parameterTypes": [
-          "java.lang.String"
-        ]
+        "name": "getArgs",
+        "parameterTypes": []
+      },
+      {
+        "name": "getImage",
+        "parameterTypes": []
       },
       {
         "name": "setArgs",
         "parameterTypes": [
           "java.util.List"
+        ]
+      },
+      {
+        "name": "setImage",
+        "parameterTypes": [
+          "java.lang.String"
         ]
       }
     ]
