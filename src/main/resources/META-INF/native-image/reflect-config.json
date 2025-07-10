@@ -80,6 +80,69 @@
     ]
   },
   {
+    "name": "com.rhizomind.quickapp.repo.RepoList",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      },
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getRepositories",
+        "parameterTypes": []
+      },
+      {
+        "name": "setRepositories",
+        "parameterTypes": [
+          "java.util.List"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.rhizomind.quickapp.repo.Repo",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": [
+          "java.lang.String",
+          "java.net.URL"
+        ]
+      },
+      {
+        "name": "getName",
+        "parameterTypes": []
+      },
+      {
+        "name": "setName",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      },
+      {
+        "name": "getUrl",
+        "parameterTypes": []
+      },
+      {
+        "name": "setUrl",
+        "parameterTypes": [
+          "java.net.URL"
+        ]
+      }
+    ]
+  },
+  {
     "name": "com.rhizomind.quickapp.EngineConfig",
     "allDeclaredFields": true,
     "queryAllDeclaredMethods": true,

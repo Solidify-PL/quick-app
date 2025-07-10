@@ -3,6 +3,7 @@ package com.rhizomind.quickapp.repo;
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
 
+import java.net.URL;
 import java.util.concurrent.Callable;
 
 @CommandLine.Command(
@@ -16,10 +17,28 @@ public class RepoAddCommand implements Callable<Integer> {
     private String repoName;
 
     @Parameters(index = "1", description = "URL repozytorium QuickApp.")
-    private String repoUrl;
+    private URL repoUrl;
 
     @Override
     public Integer call() throws Exception {
+        System.out.println("Adding repository " + repoName + " to local list...");
+        var repoList = Fixtures.getRepoList();
+        var existingRepo = repoList.getRepositories()
+                .stream()
+                .filter(repo -> repo.getName().equals(repoName))
+                .findAny();
+        if (!existingRepo.isEmpty()) {
+            throw new RuntimeException("Repository " + repoName + " already exists in local list.");
+        }
+        repoList.getRepositories().add(new Repo(repoName, repoUrl));
+        Fixtures.saveRepoList(repoList);
+
+
+        System.out.println("Updating repositories index...");
+        var index = Fixtures.fetchIndex(repoUrl);
+        Fixtures.cacheIndex(index, repoName);
+
         return 0;
     }
+
 }

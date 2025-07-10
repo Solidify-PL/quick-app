@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 
+import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
@@ -25,6 +26,9 @@ import picocli.CommandLine.Option;
 )
 class GenerateCommand implements Callable<Integer> {
 
+    @CommandLine.Parameters(index = "0", description = "template directory or name (<repoName>/<templateName>)")
+    private String templateDirOrName;
+
     @Option(names = {"-v", "--values"}, description = "Values yaml ")
     private File valuesFile;
 
@@ -32,9 +36,6 @@ class GenerateCommand implements Callable<Integer> {
             description = "Parametry nadpisujace wartosci z pliku values --value <nazwa>=<wartość>",
             paramLabel = "<nazwa>=<wartość>")
     private Map<String, String> values = new HashMap<>();
-
-    @Option(names = {"-t", "--template"}, description = "template directory")
-    private File templateDir;
 
     @Option(names = {"-o",
             "--output"}, description = "Output directory (Workdir by default) ", required = true)
@@ -55,10 +56,10 @@ class GenerateCommand implements Callable<Integer> {
             outputDir.mkdirs();
         }
 
-        var templateFilesDir = new File(templateDir, "files");
-        var manifest = Commons.loadManifest(new FileInputStream(new File(templateDir, "manifest.yaml")));
+        var templateFilesDir = new File(templateDirOrName, "files");
+        var manifest = Commons.loadManifest(new FileInputStream(new File(templateDirOrName, "manifest.yaml")));
         var values = Commons.loadMapParameters(this.valuesFile);
-        var defaults = Commons.loadMapParameters(new File(templateDir, manifest.getValues().getDefaults()));
+        var defaults = Commons.loadMapParameters(new File(templateDirOrName, manifest.getValues().getDefaults()));
         var merge = merge(this.values, merge(values, defaults));
 
         var tempValuesFile = Files.createTempFile("quickapp", "values").toFile();
