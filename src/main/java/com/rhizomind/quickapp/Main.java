@@ -1,11 +1,13 @@
 package com.rhizomind.quickapp;
 
+import com.rhizomind.quickapp.repo.RepoCommand;
 import picocli.CommandLine;
 
 @CommandLine.Command(
         name = "qa",
-        subcommands = {GenerateCommand.class, PackageCommand.class, IndexCommand.class},
-        description = "QuickApp CLI tool"
+        subcommands = {GenerateCommand.class, PackageCommand.class, IndexCommand.class, RepoCommand.class},
+        description = "QuickApp CLI tool",
+        mixinStandardHelpOptions = true
 )
 public class Main implements Runnable {
 
@@ -14,9 +16,11 @@ public class Main implements Runnable {
         System.exit(exitCode);
     }
 
+    @CommandLine.Spec
+    CommandLine.Model.CommandSpec spec;
+
     @Override
     public void run() {
-        System.out.println(
-                "Użyj jednej z komend: generate, package. Wpisz 'qa --help', aby zobaczyć szczegóły.");
+        new CommandLine(spec).usage(System.out);
     }
 }
