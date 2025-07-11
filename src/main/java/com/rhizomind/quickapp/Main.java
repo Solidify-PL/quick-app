@@ -14,8 +14,8 @@ import java.nio.file.Path;
 public class Main implements Runnable {
 
     public static void main(String[] args) {
-        Path cacheDirectory1 = Directories.createCacheDirectory();
-        Path configDirectory = Directories.createConfigDirectory();
+        Path cacheDirectory1 = Directories.ensureCacheDirectoryExists();
+        Path configDirectory = Directories.ensureConfigDirectoryExists();
         int exitCode = new CommandLine(new Main()).execute(args);
         System.exit(exitCode);
     }

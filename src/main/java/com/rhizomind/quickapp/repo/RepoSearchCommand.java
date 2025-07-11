@@ -26,7 +26,7 @@ public class RepoSearchCommand implements Callable<Integer> {
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("Repository " + repoName + " not found."));
 
-        printManifestTable(Fixtures.readIndex(repository));
+        printManifestTable(Fixtures.readCachedIndex(repository));
 
         return 0;
     }

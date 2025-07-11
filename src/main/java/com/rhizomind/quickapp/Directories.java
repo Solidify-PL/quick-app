@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 
 public class Directories {
 
-    public static Path createCacheDirectory() {
+    public static Path ensureCacheDirectoryExists() {
         String os = System.getProperty("os.name").toLowerCase();
         Path cachePath;
 
@@ -37,7 +37,7 @@ public class Directories {
         }
     }
 
-    public static Path createConfigDirectory() {
+    public static Path ensureConfigDirectoryExists() {
         String os = System.getProperty("os.name").toLowerCase();
         Path configPath;
 
