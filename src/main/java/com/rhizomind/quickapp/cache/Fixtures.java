@@ -1,10 +1,11 @@
-package com.rhizomind.quickapp.repo;
+package com.rhizomind.quickapp.cache;
 
 import static com.rhizomind.quickapp.Commons.OBJECT_MAPPER;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.rhizomind.quickapp.Directories;
 import com.rhizomind.quickapp.Manifest;
+import com.rhizomind.quickapp.generate.TemplateRef;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -114,8 +115,11 @@ public class Fixtures {
         OBJECT_MAPPER.writeValue(indexFile, index);
     }
 
-    public static File getTemplatePackageFile(String repoName, String templateName,
-            String version) throws IOException {
+    public static File getTemplatePackageFile(TemplateRef templateRef) throws IOException {
+        String repoName = templateRef.getRepository();
+        String templateName = templateRef.getName();
+        String version = templateRef.getVersion();
+
         var matchingRepo = Fixtures.getRepoList()
                 .getRepositories()
                 .stream()
@@ -193,4 +197,8 @@ public class Fixtures {
         return new File(Directories.ensureCacheDirectoryExists().toFile(), matchingRepo.getName());
     }
 
+    public static void updateIndex(Repo repo) throws IOException {
+        var index = fetchIndex(repo.getUrl());
+        cacheIndex(index, repo.getName());
+    }
 }

@@ -1,10 +1,11 @@
-package com.rhizomind.quickapp.repo;
+package com.rhizomind.quickapp.cache;
 
 import com.rhizomind.quickapp.Manifest;
 import picocli.CommandLine;
 
 import java.util.List;
 import java.util.concurrent.Callable;
+import picocli.CommandLine.Parameters;
 
 @CommandLine.Command(
         name = "search",
@@ -13,7 +14,7 @@ import java.util.concurrent.Callable;
 )
 public class RepoSearchCommand implements Callable<Integer> {
 
-    @CommandLine.Parameters(index = "0", description = "Nazwa repozytorium QuickApp.")
+    @Parameters(index = "0", description = "Nazwa repozytorium QuickApp.")
     private String repoName;
 
     @Override

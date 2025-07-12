@@ -1,10 +1,10 @@
-package com.rhizomind.quickapp.repo;
+package com.rhizomind.quickapp.cache;
 
 import picocli.CommandLine;
 
 @CommandLine.Command(
         name = "repo",
-        subcommands = {RepoAddCommand.class, RepoListCommand.class, RepoRemoveCommand.class, RepoSearchCommand.class},
+        subcommands = {RepoAddCommand.class, RepoListCommand.class, RepoRemoveCommand.class, RepoSearchCommand.class, RepoUpdateCommand.class},
         description = "Add, List, Remove, Search local repositories",
         mixinStandardHelpOptions = true
 )

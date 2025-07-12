@@ -1,4 +1,4 @@
-package com.rhizomind.quickapp.repo;
+package com.rhizomind.quickapp.cache;
 
 import picocli.CommandLine;
 

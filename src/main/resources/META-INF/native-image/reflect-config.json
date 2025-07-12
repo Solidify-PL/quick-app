@@ -80,7 +80,7 @@
     ]
   },
   {
-    "name": "com.rhizomind.quickapp.repo.RepoList",
+    "name": "com.rhizomind.quickapp.cache.RepoList",
     "allDeclaredFields": true,
     "queryAllDeclaredMethods": true,
     "queryAllDeclaredConstructors": true,
@@ -108,7 +108,7 @@
     ]
   },
   {
-    "name": "com.rhizomind.quickapp.repo.Repo",
+    "name": "com.rhizomind.quickapp.cache.Repo",
     "allDeclaredFields": true,
     "queryAllDeclaredMethods": true,
     "queryAllDeclaredConstructors": true,

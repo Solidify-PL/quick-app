@@ -1,4 +1,4 @@
-package com.rhizomind.quickapp.repo;
+package com.rhizomind.quickapp.cache;
 
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
@@ -30,13 +30,13 @@ public class RepoAddCommand implements Callable<Integer> {
         if (!existingRepo.isEmpty()) {
             throw new RuntimeException("Repository " + repoName + " already exists in local list.");
         }
-        repoList.getRepositories().add(new Repo(repoName, repoUrl));
+        Repo repo = new Repo(repoName, repoUrl);
+        repoList.getRepositories().add(repo);
         Fixtures.saveRepoList(repoList);
 
 
         System.out.println("Updating repositories index...");
-        var index = Fixtures.fetchIndex(repoUrl);
-        Fixtures.cacheIndex(index, repoName);
+        Fixtures.updateIndex(repo);
 
         return 0;
     }

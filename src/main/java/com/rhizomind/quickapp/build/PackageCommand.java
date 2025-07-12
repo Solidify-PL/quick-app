@@ -1,9 +1,11 @@
-package com.rhizomind.quickapp;
+package com.rhizomind.quickapp.build;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
+import com.rhizomind.quickapp.Commons;
+import com.rhizomind.quickapp.Manifest;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;

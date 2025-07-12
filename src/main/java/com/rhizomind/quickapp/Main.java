@@ -1,6 +1,9 @@
 package com.rhizomind.quickapp;
 
-import com.rhizomind.quickapp.repo.RepoCommand;
+import com.rhizomind.quickapp.build.IndexCommand;
+import com.rhizomind.quickapp.build.PackageCommand;
+import com.rhizomind.quickapp.cache.RepoCommand;
+import com.rhizomind.quickapp.generate.GenerateCommand;
 import picocli.CommandLine;
 
 import java.nio.file.Path;

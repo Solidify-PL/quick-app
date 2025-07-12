@@ -1,5 +1,6 @@
-package com.rhizomind.quickapp;
+package com.rhizomind.quickapp.build;
 
+import com.rhizomind.quickapp.Manifest;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
