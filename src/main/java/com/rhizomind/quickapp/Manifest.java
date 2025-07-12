@@ -16,15 +16,12 @@ public class Manifest {
     private String description;
     @Singular
     private List<String> tags;
-    private EngineConfig engine;
+    private GeneratorConfig generator;
     private ValuesConfig values;
-    @Singular
-    private Set<String> excludeFromProcessingRegexps;
 
 
     public Manifest() {
         tags = new ArrayList<>();
-        excludeFromProcessingRegexps = new HashSet<>();
         values = new ValuesConfig();
     }
 }

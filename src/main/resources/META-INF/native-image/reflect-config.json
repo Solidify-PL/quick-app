@@ -12,9 +12,8 @@
           "java.lang.String",
           "java.lang.String",
           "java.util.List",
-          "com.rhizomind.quickapp.EngineConfig",
-          "com.rhizomind.quickapp.ValuesConfig",
-          "java.util.Set"
+          "com.rhizomind.quickapp.GeneratorConfig",
+          "com.rhizomind.quickapp.ValuesConfig"
         ]
       },
       {
@@ -22,11 +21,7 @@
         "parameterTypes": []
       },
       {
-        "name": "getEngine",
-        "parameterTypes": []
-      },
-      {
-        "name": "getExcludeFromProcessingRegexps",
+        "name": "getGenerator",
         "parameterTypes": []
       },
       {
@@ -143,7 +138,7 @@
     ]
   },
   {
-    "name": "com.rhizomind.quickapp.EngineConfig",
+    "name": "com.rhizomind.quickapp.GeneratorConfig",
     "allDeclaredFields": true,
     "queryAllDeclaredMethods": true,
     "queryAllDeclaredConstructors": true,

@@ -78,12 +78,12 @@ public class GenerateCommand implements Callable<Integer> {
                 + " -v " + tempValuesFile.getAbsolutePath()
                 + ":/tmp/quickapp/values.yaml:ro "
                 + " -v " + outputDir.getAbsolutePath() + ":/tmp/quickapp/output "
-                + " " + manifest.getEngine().getImage()
+                + " " + manifest.getGenerator().getImage()
                 + " --input=/tmp/quickapp/input "
                 + " --values=/tmp/quickapp/values.yaml "
                 + " --output=/tmp/quickapp/output "
                 + (forceRewrite ? " --force " : "")
-                + Joiner.join(manifest.getEngine().getArgs());
+                + Joiner.join(manifest.getGenerator().getArgs());
 
         return execute(command);
     }

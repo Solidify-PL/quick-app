@@ -10,16 +10,19 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.fasterxml.jackson.databind.DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES;
+
 public class Commons {
 
-    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(new YAMLFactory());
+    public static final ObjectMapper OBJECT_MAPPER = new ObjectMapper(new YAMLFactory())
+            .disable(FAIL_ON_UNKNOWN_PROPERTIES);
 
     public static Manifest loadManifest(InputStream inputStream) throws IOException {
-        return new ObjectMapper(new YAMLFactory()).readValue(inputStream, Manifest.class);
+        return OBJECT_MAPPER.readValue(inputStream, Manifest.class);
     }
 
     public static Manifest loadManifest(File file) throws IOException {
-        return new ObjectMapper(new YAMLFactory()).readValue(file, Manifest.class);
+        return OBJECT_MAPPER.readValue(file, Manifest.class);
     }
 
     public static Map<String, String> loadMapParameters(File valuesFile) throws IOException {

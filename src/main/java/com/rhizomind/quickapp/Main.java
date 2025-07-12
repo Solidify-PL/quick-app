@@ -1,6 +1,7 @@
 package com.rhizomind.quickapp;
 
 import com.rhizomind.quickapp.build.IndexCommand;
+import com.rhizomind.quickapp.build.PackageAllCommand;
 import com.rhizomind.quickapp.build.PackageCommand;
 import com.rhizomind.quickapp.cache.RepoCommand;
 import com.rhizomind.quickapp.generate.GenerateCommand;
@@ -10,7 +11,8 @@ import java.nio.file.Path;
 
 @CommandLine.Command(
         name = "qa",
-        subcommands = {GenerateCommand.class, PackageCommand.class, IndexCommand.class, RepoCommand.class},
+        subcommands = {GenerateCommand.class, PackageCommand.class, IndexCommand.class, RepoCommand.class,
+            PackageAllCommand.class},
         description = "QuickApp CLI tool",
         mixinStandardHelpOptions = true
 )
