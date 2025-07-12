@@ -13,7 +13,8 @@
           "java.lang.String",
           "java.util.List",
           "com.rhizomind.quickapp.GeneratorConfig",
-          "com.rhizomind.quickapp.ValuesConfig"
+          "com.rhizomind.quickapp.ValuesConfig",
+          "com.rhizomind.quickapp.ValidatorConfig"
         ]
       },
       {
@@ -38,6 +39,10 @@
       },
       {
         "name": "getVersion",
+        "parameterTypes": []
+      },
+      {
+        "name": "getValidator",
         "parameterTypes": []
       }
     ]
@@ -159,6 +164,38 @@
         "name": "setArgs",
         "parameterTypes": [
           "java.util.List"
+        ]
+      },
+      {
+        "name": "setImage",
+        "parameterTypes": [
+          "java.lang.String"
+        ]
+      }
+    ]
+  },
+  {
+    "name": "com.rhizomind.quickapp.ValidatorConfig",
+    "allDeclaredFields": true,
+    "queryAllDeclaredMethods": true,
+    "queryAllDeclaredConstructors": true,
+    "methods": [
+      {
+        "name": "<init>",
+        "parameterTypes": []
+      },
+      {
+        "name": "getCommand",
+        "parameterTypes": []
+      },
+      {
+        "name": "getImage",
+        "parameterTypes": []
+      },
+      {
+        "name": "setCommand",
+        "parameterTypes": [
+          "java.lang.String"
         ]
       },
       {

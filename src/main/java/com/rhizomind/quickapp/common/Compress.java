@@ -12,7 +12,7 @@ import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 
 public class Compress {
 
-    public static File extractTarGz(File tarGzFile) throws IOException {
+    public static File extractTemplate(File tarGzFile) throws IOException {
         var dstDir = Files.createTempDirectory(tarGzFile.getName()).toFile();
 
         try (InputStream fi = new FileInputStream(tarGzFile);

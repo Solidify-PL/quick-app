@@ -18,6 +18,7 @@ public class Manifest {
     private List<String> tags;
     private GeneratorConfig generator;
     private ValuesConfig values;
+    private ValidatorConfig validator;
 
 
     public Manifest() {
