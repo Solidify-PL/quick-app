@@ -2,9 +2,9 @@ package com.rhizomind.quickapp.generate;
 
 import static com.rhizomind.quickapp.Commons.OBJECT_MAPPER;
 import static com.rhizomind.quickapp.Commons.loadManifest;
-import static com.rhizomind.quickapp.Commons.loadMapParameters;
 import static com.rhizomind.quickapp.common.Process.execute;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.rhizomind.quickapp.Manifest;
 import com.rhizomind.quickapp.common.Joiner;
 import java.io.File;
@@ -58,5 +58,21 @@ public class GenerateFixtures {
         result.putAll(defaults);
         result.putAll(values);
         return result;
+    }
+
+    public static Map<String, String> loadMapParameters(File valuesFile) throws IOException {
+        if (valuesFile == null) {
+            return new HashMap<>();
+        }
+        if (!valuesFile.exists()) {
+            throw new RuntimeException(
+                    "File '" + valuesFile.getAbsolutePath() + "' does not exist");
+        }
+        if (valuesFile.length() == 0) {
+            return new HashMap<>();
+        }
+        return OBJECT_MAPPER.readValue(valuesFile,
+                new TypeReference<Map<String, String>>() {
+                });
     }
 }
