@@ -1,42 +1,68 @@
 package com.rhizomind.quickapp;
 
-import com.rhizomind.quickapp.build.IndexCommand;
-import com.rhizomind.quickapp.build.PackageAllCommand;
-import com.rhizomind.quickapp.build.PackageCommand;
-import com.rhizomind.quickapp.build.TestCommand;
-import com.rhizomind.quickapp.cache.RepoCommand;
-import com.rhizomind.quickapp.generate.GenerateCommand;
-import picocli.CommandLine;
+import static com.rhizomind.quickapp.Directories.defaultConfigFile;
+import static com.rhizomind.quickapp.Directories.ensureCacheDirectoryExists;
+import static com.rhizomind.quickapp.Directories.ensureConfigFileExists;
+import static com.rhizomind.quickapp.Directories.getDefaultCacheDir;
+import static picocli.CommandLine.ScopeType.INHERIT;
 
-import java.nio.file.Path;
+import com.rhizomind.quickapp.build.command.IndexCommand;
+import com.rhizomind.quickapp.build.command.PackageAllCommand;
+import com.rhizomind.quickapp.build.command.PackageCommand;
+import com.rhizomind.quickapp.generate.command.TestCommand;
+import com.rhizomind.quickapp.cache.Config;
+import com.rhizomind.quickapp.cache.command.RepoCommand;
+import com.rhizomind.quickapp.generate.command.GenerateCommand;
+import java.io.File;
+import java.io.IOException;
+import picocli.CommandLine;
+import picocli.CommandLine.Option;
 
 @CommandLine.Command(
-    name = "qa",
-    subcommands = {
-        GenerateCommand.class,
-        PackageCommand.class,
-        IndexCommand.class,
-        RepoCommand.class,
-        PackageAllCommand.class,
-        TestCommand.class
-    },
-    description = "QuickApp CLI tool",
-    mixinStandardHelpOptions = true
+        name = "qa",
+        subcommands = {
+                GenerateCommand.class,
+                PackageCommand.class,
+                IndexCommand.class,
+                RepoCommand.class,
+                PackageAllCommand.class,
+                TestCommand.class
+        },
+        description = "QuickApp CLI tool",
+        mixinStandardHelpOptions = true
 )
 public class Main implements Runnable {
 
-  public static void main(String[] args) {
-    Path cacheDirectory1 = Directories.ensureCacheDirectoryExists();
-    Path configDirectory = Directories.ensureConfigDirectoryExists();
-    int exitCode = new CommandLine(new Main()).execute(args);
-    System.exit(exitCode);
-  }
+    @Option(names = "--config-file", description = "Ścieżka do pliku konfiguracyjnego", scope = INHERIT, defaultValue = "${HOME}/.config/quick-app/repositories.yaml")
+    private String configPath;
+    @Option(names = "--cache-dir", description = "Ścieżka do pliku konfiguracyjnego", scope = INHERIT, defaultValue = "${HOME}/.cache/quick-app")
+    private String cacheDir;
 
-  @CommandLine.Spec
-  CommandLine.Model.CommandSpec spec;
+    private Config config;
 
-  @Override
-  public void run() {
-    new CommandLine(spec).usage(System.out);
-  }
+    public static void main(String[] args) {
+        System.exit(new CommandLine(new Main()).execute(args));
+    }
+
+    @CommandLine.Spec
+    CommandLine.Model.CommandSpec spec;
+
+    @Override
+    public void run() {
+        new CommandLine(spec).usage(System.out);
+    }
+
+    public Config getConfig() throws IOException {
+        if (config == null) {
+            config = new Config(
+                    ensureConfigFileExists(
+                            configPath != null ? new File(configPath) : defaultConfigFile()
+                    ),
+                    ensureCacheDirectoryExists(
+                            cacheDir != null ? new File(cacheDir) : getDefaultCacheDir()
+                    )
+            );
+        }
+        return config;
+    }
 }

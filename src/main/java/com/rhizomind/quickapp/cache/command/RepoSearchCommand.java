@@ -1,11 +1,12 @@
-package com.rhizomind.quickapp.cache;
+package com.rhizomind.quickapp.cache.command;
 
 import com.rhizomind.quickapp.Manifest;
-import picocli.CommandLine;
-
+import com.rhizomind.quickapp.cache.Config;
 import java.util.List;
 import java.util.concurrent.Callable;
+import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
+import picocli.CommandLine.ParentCommand;
 
 @CommandLine.Command(
         name = "search",
@@ -17,17 +18,21 @@ public class RepoSearchCommand implements Callable<Integer> {
     @Parameters(index = "0", description = "Nazwa repozytorium QuickApp.")
     private String repoName;
 
+    @ParentCommand
+    RepoCommand parent;
+
+
     @Override
     public Integer call() throws Exception {
-        var repoList = Fixtures.getRepoList();
+        Config config = parent.getConfig();
 
-        var repository = repoList.getRepositories()
+        var repository = config.getRepoList().getRepositories()
                 .stream()
                 .filter(repo -> repo.getName().equals(repoName))
                 .findAny()
                 .orElseThrow(() -> new RuntimeException("Repository " + repoName + " not found."));
 
-        printManifestTable(Fixtures.readCachedIndex(repository));
+        printManifestTable(config.getRepoCache(repository).readCachedIndex());
 
         return 0;
     }
@@ -40,14 +45,20 @@ public class RepoSearchCommand implements Callable<Integer> {
 
         // Obliczenie maksymalnej długości pól, aby dostosować szerokość kolumn
         for (Manifest manifest : manifests) {
-            nameWidth = Math.max(nameWidth, manifest.getName() != null ? manifest.getName().length() : 0);
-            versionWidth = Math.max(versionWidth, manifest.getVersion() != null ? manifest.getVersion().length() : 0);
-            descriptionWidth = Math.max(descriptionWidth, manifest.getDescription() != null ? manifest.getDescription().length() : 0);
+            nameWidth = Math.max(nameWidth,
+                    manifest.getName() != null ? manifest.getName().length() : 0);
+            versionWidth = Math.max(versionWidth,
+                    manifest.getVersion() != null ? manifest.getVersion().length() : 0);
+            descriptionWidth = Math.max(descriptionWidth,
+                    manifest.getDescription() != null ? manifest.getDescription().length() : 0);
         }
 
         // Budowanie formatu dla wierszy
-        String format = "| %-" + nameWidth + "s | %-" + versionWidth + "s | %-" + descriptionWidth + "s |%n";
-        String separator = "+" + "-".repeat(nameWidth + 2) + "+" + "-".repeat(versionWidth + 2) + "+" + "-".repeat(descriptionWidth + 2) + "+";
+        String format = "| %-" + nameWidth + "s | %-" + versionWidth + "s | %-" + descriptionWidth
+                + "s |%n";
+        String separator =
+                "+" + "-".repeat(nameWidth + 2) + "+" + "-".repeat(versionWidth + 2) + "+"
+                        + "-".repeat(descriptionWidth + 2) + "+";
 
         // Wyświetlenie nagłówka
         System.out.println(separator);

@@ -1,9 +1,10 @@
-package com.rhizomind.quickapp.cache;
+package com.rhizomind.quickapp.cache.command;
 
-import picocli.CommandLine;
-
+import com.rhizomind.quickapp.cache.Repo;
 import java.util.List;
 import java.util.concurrent.Callable;
+import picocli.CommandLine;
+import picocli.CommandLine.ParentCommand;
 
 @CommandLine.Command(
         name = "list",
@@ -12,10 +13,14 @@ import java.util.concurrent.Callable;
 )
 public class RepoListCommand implements Callable<Integer> {
 
+    @ParentCommand
+    RepoCommand parent;
+
     @Override
     public Integer call() throws Exception {
-        printReposAsTable(Fixtures.getRepoList().getRepositories());
+        var repositories = parent.getConfig().getRepositories();
 
+        printReposAsTable(repositories);
         return 0;
     }
 
@@ -29,13 +34,16 @@ public class RepoListCommand implements Callable<Integer> {
         int maxNameLength = "Name".length();
         int maxUrlLength = "URL".length();
         for (Repo repo : repos) {
-            maxNameLength = Math.max(maxNameLength, repo.getName() != null ? repo.getName().length() : 0);
-            maxUrlLength = Math.max(maxUrlLength, repo.getUrl() != null ? repo.getUrl().toString().length() : 0);
+            maxNameLength = Math.max(maxNameLength,
+                    repo.getName() != null ? repo.getName().length() : 0);
+            maxUrlLength = Math.max(maxUrlLength,
+                    repo.getUrl() != null ? repo.getUrl().toString().length() : 0);
         }
 
         // Budowanie formatu dla nagłówków i wierszy
         String format = "| %-" + maxNameLength + "s | %-" + maxUrlLength + "s |%n";
-        String separator = "+" + "-".repeat(maxNameLength + 2) + "+" + "-".repeat(maxUrlLength + 2) + "+";
+        String separator =
+                "+" + "-".repeat(maxNameLength + 2) + "+" + "-".repeat(maxUrlLength + 2) + "+";
 
         // Drukowanie nagłówków
         System.out.println(separator);

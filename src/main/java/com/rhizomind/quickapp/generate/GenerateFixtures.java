@@ -1,28 +1,24 @@
 package com.rhizomind.quickapp.generate;
 
+import static com.rhizomind.quickapp.Commons.OBJECT_MAPPER;
+import static com.rhizomind.quickapp.Commons.loadManifest;
+import static com.rhizomind.quickapp.Commons.loadMapParameters;
+import static com.rhizomind.quickapp.common.Process.execute;
+
 import com.rhizomind.quickapp.Manifest;
 import com.rhizomind.quickapp.common.Joiner;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.rhizomind.quickapp.Commons.*;
-import static com.rhizomind.quickapp.cache.Fixtures.getTemplatePackageFile;
-import static com.rhizomind.quickapp.common.Compress.extractTemplate;
-import static com.rhizomind.quickapp.common.Process.execute;
-import static com.rhizomind.quickapp.generate.TemplateRef.isTemplateRef;
-import static com.rhizomind.quickapp.generate.TemplateRef.parse;
-
 public class GenerateFixtures {
 
-    public static Manifest doGenerate(String templateDirOrName, File outputDir, boolean forceRewrite,
+    public static Manifest doGenerate(File templateDir, File outputDir, boolean forceRewrite,
             File valuesFile, Map<String, String> valuesOverride)
             throws IOException, InterruptedException {
 
-        var templateDir = GenerateFixtures.prepareTemplateDir(templateDirOrName);
         var manifest = loadManifest(new File(templateDir, "manifest.yaml"));
         var values = merge(
                 valuesOverride,
@@ -31,6 +27,7 @@ public class GenerateFixtures {
                         loadMapParameters(new File(templateDir, manifest.getValues().getDefaults()))
                 )
         );
+        System.out.println("Generating " + templateDir);
         System.out.println("Using following values:");
         System.out.println(OBJECT_MAPPER.writeValueAsString(values));
 
@@ -53,16 +50,6 @@ public class GenerateFixtures {
             throw new RuntimeException("Error executing generator: " + command);
         }
         return manifest;
-    }
-
-    public static File prepareTemplateDir(String templateDirOrName1) throws IOException {
-        if (isTemplateRef(templateDirOrName1)) {
-            var templateRef = parse(templateDirOrName1);
-            var tmpExtractionDir = extractTemplate(getTemplatePackageFile(templateRef));
-            return new File(tmpExtractionDir, templateRef.getName());
-        } else {
-            return new File(templateDirOrName1);
-        }
     }
 
     public static Map<String, String> merge(Map<String, String> values,

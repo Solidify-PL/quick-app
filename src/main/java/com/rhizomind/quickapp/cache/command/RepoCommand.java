@@ -1,6 +1,12 @@
-package com.rhizomind.quickapp.cache;
+package com.rhizomind.quickapp.cache.command;
 
+import com.rhizomind.quickapp.Main;
+import com.rhizomind.quickapp.cache.Config;
+import java.io.IOException;
 import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.ParentCommand;
+import picocli.CommandLine.Spec;
 
 @CommandLine.Command(
         name = "repo",
@@ -10,8 +16,15 @@ import picocli.CommandLine;
 )
 public class RepoCommand implements Runnable{
 
-    @CommandLine.Spec
-    CommandLine.Model.CommandSpec spec;
+    @Spec
+    CommandSpec spec;
+
+    @ParentCommand
+    Main parent;
+
+    public Config getConfig() throws IOException {
+        return parent.getConfig();
+    }
 
     @Override
     public void run() {

@@ -1,11 +1,11 @@
-package com.rhizomind.quickapp.build;
+package com.rhizomind.quickapp.build.command;
 
 import picocli.CommandLine;
 
 import java.io.*;
 import java.util.concurrent.Callable;
 
-import static com.rhizomind.quickapp.build.BulidFixtures.isValidTemplateDir;
+import static com.rhizomind.quickapp.build.command.BulidFixtures.isValidTemplateDir;
 
 @CommandLine.Command(
         name = "package",

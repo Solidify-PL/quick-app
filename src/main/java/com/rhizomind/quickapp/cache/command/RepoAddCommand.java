@@ -1,10 +1,12 @@
-package com.rhizomind.quickapp.cache;
+package com.rhizomind.quickapp.cache.command;
 
+import com.rhizomind.quickapp.cache.Repo;
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
 
 import java.net.URL;
 import java.util.concurrent.Callable;
+import picocli.CommandLine.ParentCommand;
 
 @CommandLine.Command(
         name = "add",
@@ -19,24 +21,13 @@ public class RepoAddCommand implements Callable<Integer> {
     @Parameters(index = "1", description = "URL repozytorium QuickApp.")
     private URL repoUrl;
 
+    @ParentCommand
+    RepoCommand parent;
+
     @Override
     public Integer call() throws Exception {
         System.out.println("Adding repository " + repoName + " to local list...");
-        var repoList = Fixtures.getRepoList();
-        var existingRepo = repoList.getRepositories()
-                .stream()
-                .filter(repo -> repo.getName().equals(repoName))
-                .findAny();
-        if (!existingRepo.isEmpty()) {
-            throw new RuntimeException("Repository " + repoName + " already exists in local list.");
-        }
-        Repo repo = new Repo(repoName, repoUrl);
-        repoList.getRepositories().add(repo);
-        Fixtures.saveRepoList(repoList);
-
-
-        System.out.println("Updating repositories index...");
-        Fixtures.updateIndex(repo);
+        parent.getConfig().addRepo(new Repo(repoName, repoUrl));
 
         return 0;
     }

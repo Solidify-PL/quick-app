@@ -1,4 +1,4 @@
-package com.rhizomind.quickapp.build;
+package com.rhizomind.quickapp.build.command;
 
 import picocli.CommandLine;
 

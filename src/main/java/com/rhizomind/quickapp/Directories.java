@@ -1,12 +1,24 @@
 package com.rhizomind.quickapp;
 
+import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class Directories {
 
-    public static Path ensureCacheDirectoryExists() {
+    public static File ensureCacheDirectoryExists(File cacheDir) {
+        try {
+            // Tworzy katalog, jeśli nie istnieje
+            Files.createDirectories(cacheDir.toPath());
+        } catch (Exception e) {
+            throw new RuntimeException("Nie udało się utworzyć katalogu: " + cacheDir, e);
+        }
+        return cacheDir;
+    }
+
+    public static File getDefaultCacheDir() {
         String os = System.getProperty("os.name").toLowerCase();
         Path cachePath;
 
@@ -28,13 +40,7 @@ public class Directories {
             throw new RuntimeException("Nieobsługiwany system operacyjny: " + os);
         }
 
-        try {
-            // Tworzy katalog, jeśli nie istnieje
-            Files.createDirectories(cachePath);
-            return cachePath;
-        } catch (Exception e) {
-            throw new RuntimeException("Nie udało się utworzyć katalogu: " + cachePath, e);
-        }
+        return cachePath.toFile();
     }
 
     public static Path ensureConfigDirectoryExists() {
@@ -45,7 +51,8 @@ public class Directories {
             // Linux/macOS: Używamy XDG_CONFIG_HOME lub ~/.config
             String configHome = System.getenv("XDG_CONFIG_HOME");
             String userHome = System.getProperty("user.home");
-            configPath = Paths.get(configHome != null && !configHome.isEmpty() ? configHome : Paths.get(userHome, ".config").toString(), "quick-app");
+            configPath = Paths.get(configHome != null && !configHome.isEmpty() ? configHome
+                    : Paths.get(userHome, ".config").toString(), "quick-app");
         } else if (os.contains("win")) {
             // Windows: Próbujemy użyć %APPDATA%\quick-app
             String appData = System.getenv("APPDATA");
@@ -70,4 +77,16 @@ public class Directories {
     }
 
 
+    public static File ensureConfigFileExists(File file) throws IOException {
+        file.getParentFile().mkdirs();
+        file.createNewFile();
+        return file;
+    }
+
+    public static File defaultConfigFile() {
+        return new File(
+                ensureConfigDirectoryExists().toFile(),
+                "repositories.yaml"
+        );
+    }
 }

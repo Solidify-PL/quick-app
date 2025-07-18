@@ -1,9 +1,9 @@
-package com.rhizomind.quickapp.cache;
+package com.rhizomind.quickapp.cache.command;
 
 import java.util.concurrent.Callable;
-import java.util.stream.Collectors;
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
+import picocli.CommandLine.ParentCommand;
 
 @CommandLine.Command(
         name = "remove",
@@ -15,18 +15,15 @@ public class RepoRemoveCommand implements Callable<Integer> {
     @Parameters(index = "0", description = "Nazwa repozytorium QuickApp.")
     private String repoName;
 
+    @ParentCommand
+    RepoCommand parent;
+
+
     @Override
     public Integer call() throws Exception {
-        var repoList = Fixtures.getRepoList();
 
-        var remainingRepos = repoList.getRepositories()
-                .stream()
-                .filter(repo -> !repo.getName().equals(repoName))
-                .collect(Collectors.toList());
+        parent.getConfig().removeRepo(repoName);
 
-        repoList.setRepositories(remainingRepos);
-
-        Fixtures.saveRepoList(repoList);
         return 0;
     }
 }
