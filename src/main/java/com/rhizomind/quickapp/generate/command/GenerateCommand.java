@@ -60,20 +60,12 @@ public class GenerateCommand implements Callable<Integer> {
         if (isTemplateRef(templateDirOrName)) {
             var templateRef = parse(templateDirOrName);
 
-            var repoCache = parent.getConfig()
-                    .getRepoList()
-                    .getRepositories()
-                    .stream()
-                    .filter(r -> r.getName().equals(templateRef.getRepository()))
-                    .findFirst()
-                    .map(parent.getConfig()::getRepoCache)
-                    .orElseThrow(
-                            () -> new RuntimeException("Repository " + templateRef.getRepository()
-                                    + " not found."));
-            var tmpExtractionDir = extractTemplate(
-                    repoCache.getTemplatePackageFile(templateRef.getName(),
-                            templateRef.getVersion()));
-            result = new File(tmpExtractionDir, templateRef.getName());
+            var template = parent.getConfig()
+                    .getRepoCache(templateRef.getRepository())
+                    .orElseThrow(() -> new RuntimeException("Repository " + templateRef.getRepository()+ " not found."))
+                    .getTemplate(templateRef.getName(), templateRef.getVersion());
+            var tmpTemplateDir = template.extractTemplate();
+            result = new File(tmpTemplateDir, templateRef.getName());
         } else {
             result = new File(templateDirOrName);
         }

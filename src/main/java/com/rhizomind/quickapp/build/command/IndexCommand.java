@@ -34,13 +34,13 @@ public class IndexCommand implements Callable<Integer> {
     private File inputDir;
 
     @CommandLine.Option(names = {"-o",
-            "--output"}, description = "Output directory (Workdir by default) ")
+            "--output"}, description = "Output directory (input by default) ")
     private File outputDir;
 
     @Override
     public Integer call() throws Exception {
         var inputDir = this.inputDir == null ? new File(".") : this.inputDir;
-        var outputDir = this.outputDir == null ? new File(".") : this.outputDir;
+        var outputDir = this.outputDir == null ? inputDir : this.outputDir;
 
         var manifests = getTemplatePackage(inputDir)
                 .stream()

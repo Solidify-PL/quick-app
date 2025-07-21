@@ -5,6 +5,7 @@ import static com.rhizomind.quickapp.Commons.OBJECT_MAPPER;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
@@ -68,4 +69,12 @@ public class Config {
         return new RepoCache(cacheDirectory, repo);
     }
 
+    public Optional<RepoCache> getRepoCache(String repository) throws IOException {
+        return getRepoList()
+                .getRepositories()
+                .stream()
+                .filter(r -> r.getName().equals(repository))
+                .findFirst()
+                .map(this::getRepoCache);
+    }
 }

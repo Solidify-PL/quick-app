@@ -1,6 +1,5 @@
 package com.rhizomind.quickapp.generate.command;
 
-import static com.rhizomind.quickapp.common.Compress.extractTemplate;
 import static com.rhizomind.quickapp.common.Process.execute;
 import static com.rhizomind.quickapp.generate.TemplateRef.isTemplateRef;
 import static com.rhizomind.quickapp.generate.TemplateRef.parse;
@@ -38,20 +37,12 @@ public class TestCommand implements Callable<Integer> {
         if (isTemplateRef(templateDirOrName)) {
             var templateRef = parse(templateDirOrName);
 
-            var repoCache = parent.getConfig()
-                    .getRepoList()
-                    .getRepositories()
-                    .stream()
-                    .filter(r -> r.getName().equals(templateRef.getRepository()))
-                    .findFirst()
-                    .map(parent.getConfig()::getRepoCache)
-                    .orElseThrow(
-                            () -> new RuntimeException("Repository " + templateRef.getRepository()
-                                    + " not found."));
-            var tmpExtractionDir = extractTemplate(
-                    repoCache.getTemplatePackageFile(templateRef.getName(),
-                            templateRef.getVersion()));
-            result = new File(tmpExtractionDir, templateRef.getName());
+            var template = parent.getConfig()
+                    .getRepoCache(templateRef.getRepository())
+                    .orElseThrow(() -> new RuntimeException(
+                            "Repository " + templateRef.getRepository() + " not found."))
+                    .getTemplate(templateRef.getName(), templateRef.getVersion());
+            result = new File(template.extractTemplate(), templateRef.getName());
         } else {
             result = new File(templateDirOrName);
         }

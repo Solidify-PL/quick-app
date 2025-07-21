@@ -4,6 +4,8 @@ import static com.rhizomind.quickapp.Commons.OBJECT_MAPPER;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.rhizomind.quickapp.Manifest;
+import com.rhizomind.quickapp.TarGzTemplate;
+import com.rhizomind.quickapp.Template;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -121,4 +123,7 @@ public class RepoCache {
         return new File(repoCacheDir, "index.yaml");
     }
 
+    public TarGzTemplate getTemplate(String name, String version) throws IOException {
+        return new TarGzTemplate(name, getTemplatePackageFile(name, version));
+    }
 }

@@ -6,6 +6,7 @@ import static com.rhizomind.quickapp.Directories.ensureConfigFileExists;
 import static com.rhizomind.quickapp.Directories.getDefaultCacheDir;
 import static picocli.CommandLine.ScopeType.INHERIT;
 
+import com.rhizomind.quickapp.generate.command.DescribeCommand;
 import com.rhizomind.quickapp.build.command.IndexCommand;
 import com.rhizomind.quickapp.build.command.PackageAllCommand;
 import com.rhizomind.quickapp.build.command.PackageCommand;
@@ -26,7 +27,8 @@ import picocli.CommandLine.Option;
                 IndexCommand.class,
                 RepoCommand.class,
                 PackageAllCommand.class,
-                TestCommand.class
+                TestCommand.class,
+                DescribeCommand.class
         },
         description = "QuickApp CLI tool",
         mixinStandardHelpOptions = true
