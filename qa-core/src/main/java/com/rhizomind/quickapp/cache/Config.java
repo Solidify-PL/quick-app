@@ -9,7 +9,9 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class Config {
 
@@ -33,7 +35,7 @@ public class Config {
         repoList.getRepositories().add(repo);
         saveRepoList(repoList.getRepositories());
 
-        System.out.println("Updating repositories index...");
+        log.info("Updating repositories index...");
         RepoCache repoCache = getRepoCache(repo);
         repoCache.updateIndex();
         return repoCache;

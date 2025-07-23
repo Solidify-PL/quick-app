@@ -9,7 +9,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class RepoCache {
 
     private final File repoCacheDir;
@@ -48,7 +50,7 @@ public class RepoCache {
                         () -> new RuntimeException(
                                 "Template " + templateName + ":" + version + " not found."));
 
-        System.out.println(
+        log.info(
                 "Template " + matchingTemplate.getName() + ":" + matchingTemplate.getVersion()
                         + " found in repository "
                         + repo.getName() + ". Fetching package...");
@@ -58,7 +60,7 @@ public class RepoCache {
         if (!templatePackageFile.exists()) {
             fetchTemplatePackage(repo, matchingTemplate);
         } else {
-            System.out.println(
+            log.info(
                     "Template package already cached: " + templatePackageFile.getAbsolutePath());
         }
         return templatePackageFile;
@@ -80,7 +82,7 @@ public class RepoCache {
         path += packageFileName;
         URL url = new URL(repoUrl.getProtocol(), repoUrl.getHost(), repoUrl.getPort(), path);
 
-        System.out.println("Downloading template package: " + url + " into local cache: "
+        log.info("Downloading template package: " + url + " into local cache: "
                 + templatePackageFile.getAbsolutePath() + " ...");
 
         try (var input = url.openStream(); var output = new FileOutputStream(templatePackageFile)) {

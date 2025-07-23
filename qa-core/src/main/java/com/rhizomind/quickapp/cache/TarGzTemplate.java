@@ -1,6 +1,7 @@
 package com.rhizomind.quickapp.cache;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.rhizomind.quickapp.Commons;
 import com.rhizomind.quickapp.Compress;
 import com.rhizomind.quickapp.model.Manifest;
@@ -41,6 +42,14 @@ public class TarGzTemplate implements Template {
                 getEntryBytes(templateName + "/" + manifest.getValues().getDefaults()),
                 new TypeReference<Map<String, String>>() {
                 }
+        );
+    }
+
+    @Override
+    public JsonNode getSchema() throws IOException {
+        Manifest manifest = getManifest();
+        return Commons.OBJECT_MAPPER.readTree(
+                getEntryBytes(templateName + "/" + manifest.getValues().getSchema())
         );
     }
 

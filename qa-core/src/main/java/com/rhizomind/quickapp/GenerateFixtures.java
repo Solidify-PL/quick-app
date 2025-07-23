@@ -11,7 +11,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.Map;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class GenerateFixtures {
 
     public static Manifest doGenerate(File templateDir, File outputDir, boolean forceRewrite,
@@ -26,9 +28,9 @@ public class GenerateFixtures {
                         loadMapParameters(new File(templateDir, manifest.getValues().getDefaults()))
                 )
         );
-        System.out.println("Generating " + templateDir);
-        System.out.println("Using following values:");
-        System.out.println(OBJECT_MAPPER.writeValueAsString(values));
+        log.info("Generating " + templateDir);
+        log.info("Using following values:");
+        log.info(OBJECT_MAPPER.writeValueAsString(values));
 
         var tempValuesFile = Files.createTempFile("quickapp", "values").toFile();
         OBJECT_MAPPER.writeValue(tempValuesFile, values);

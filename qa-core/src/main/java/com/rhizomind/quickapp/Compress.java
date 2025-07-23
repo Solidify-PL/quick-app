@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -16,6 +17,8 @@ import java.nio.file.attribute.PosixFileAttributes;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipOutputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
@@ -77,6 +80,36 @@ public class Compress {
         } catch (IOException e) {
             System.err.println("Nie udało się ustawić chmod na " + file + ": " + e.getMessage());
         }
+    }
+
+    public static File compress(File sourceDir) throws IOException {
+        if (!sourceDir.isDirectory()) {
+            throw new IllegalArgumentException("Podana ścieżka nie jest katalogiem: " + sourceDir);
+        }
+
+        File tempZip = Files.createTempFile("archive-", ".zip").toFile();
+        tempZip.deleteOnExit();
+
+        try (FileOutputStream fos = new FileOutputStream(tempZip);
+                ZipOutputStream zos = new ZipOutputStream(fos)) {
+
+            Path basePath = sourceDir.toPath().toAbsolutePath();
+
+            Files.walk(sourceDir.toPath())
+                    .filter(path -> !Files.isDirectory(path))
+                    .forEach(path -> {
+                        ZipEntry zipEntry = new ZipEntry(
+                                basePath.relativize(path).toString().replace("\\", "/"));
+                        try {
+                            zos.putNextEntry(zipEntry);
+                            Files.copy(path, zos);
+                            zos.closeEntry();
+                        } catch (IOException e) {
+                            throw new UncheckedIOException(e);
+                        }
+                    });
+        }
+        return tempZip;
     }
 
     public static void createTarGz(File templateDir, String templateName, File dstFile)

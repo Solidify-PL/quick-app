@@ -5,9 +5,12 @@ import com.networknt.schema.JsonSchema;
 import com.networknt.schema.JsonSchemaFactory;
 import com.networknt.schema.SpecVersion;
 import com.rhizomind.quickapp.model.Manifest;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import lombok.extern.slf4j.Slf4j;
 
-import java.io.*;
-
+@Slf4j
 public class BuildFixtures {
 
     public static boolean isValidTemplateDir(File templateDir) {
@@ -34,7 +37,7 @@ public class BuildFixtures {
 
             var validationMessages = schema.validate(valuesNode);
             if (!validationMessages.isEmpty()) {
-                System.out.println(
+                log.info(
                         defaultsFile + " is not compatible with schema " + validationMessages);
             }
             return validationMessages.isEmpty();
@@ -52,7 +55,7 @@ public class BuildFixtures {
                     JsonSchemaFactory.class.getResourceAsStream("/draft-07/schema"));
             var validationMessages = metaSchema.validate(schemaNode);
             if (!validationMessages.isEmpty()) {
-                System.out.println(
+                log.info(
                         schemaFile + " is a proper JsonSchema file " + validationMessages);
             }
             return validationMessages.isEmpty();
@@ -66,7 +69,7 @@ public class BuildFixtures {
         try {
             Commons.loadManifest(manifestFile);
         } catch (IOException e) {
-            System.out.println(manifestFile + " is not a valid manifest file " + e.getMessage());
+            log.info(manifestFile + " is not a valid manifest file " + e.getMessage());
             return false;
         }
         return true;
@@ -76,9 +79,9 @@ public class BuildFixtures {
         Manifest manifest = Commons.loadManifest(new File(templateDir, "manifest.yaml"));
         File targetFile = new File(outputDir,
                 manifest.getName() + "-" + manifest.getVersion() + ".tar.gz");
-        System.out.println("Packaging template  into " + targetFile + " file...");
+        log.info("Packaging template  into " + targetFile + " file...");
 
         Compress.createTarGz(templateDir, manifest.getName(), targetFile);
-        System.out.println("Template packaged into " + targetFile + " file successfully.");
+        log.info("Template packaged into " + targetFile + " file successfully.");
     }
 }
