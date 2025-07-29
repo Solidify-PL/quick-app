@@ -1,12 +1,12 @@
 
 ```bash
 # latop
-# export SOLIDIFY_QA_REPO=/home/tomasz/work/rhizomind/quick-app/data/qa-repository
-# export SOLIDIFY_TEMPLATES_DIR=
+export SOLIDIFY_QA_REPO=/home/tomasz/work/rhizomind/quick-app/data/qa-repository
+export SOLIDIFY_TEMPLATES_DIR=/home/tomasz/work/rhizomind/quick-app/sources/templates
 
 # desktop
-export SOLIDIFY_QA_REPO=/solidify/solidify/spaces/quickapp/data/qa-repo
-export SOLIDIFY_TEMPLATES_DIR=/solidify/solidify/spaces/quickapp/source/templates
+#export SOLIDIFY_QA_REPO=/solidify/solidify/spaces/quickapp/data/qa-repo
+#export SOLIDIFY_TEMPLATES_DIR=/solidify/solidify/spaces/quickapp/source/templates
 
 qa package-all --templates $SOLIDIFY_TEMPLATES_DIR --output $SOLIDIFY_QA_REPO
 qa index --input $SOLIDIFY_QA_REPO
