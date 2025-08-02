@@ -16,4 +16,18 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <scm>
+        <url>https://bitbucket.org/solidify-pl/quick-app-v2</url>
+        <connection>scm:git:git://ssh@bitbucket.org/solidify-pl/quick-app-v2.git</connection>
+        <developerConnection>scm:git:ssh://git@bitbucket.org/solidify-pl/quick-app-v2.git</developerConnection>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>maven-releases</id>
+            <name>Solidify Quick-App releases repository</name>
+            <url>https://nexus.solidify.deploy-sphere.cloud/repository/solidify-qa-releases/</url>
+        </repository>
+    </distributionManagement>
+
 </project>
