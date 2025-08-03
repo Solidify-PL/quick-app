@@ -4,6 +4,7 @@ import static com.rhizomind.quickapp.Process.execute;
 import static com.rhizomind.quickapp.cache.TemplateRef.isTemplateRef;
 import static com.rhizomind.quickapp.cache.TemplateRef.parse;
 
+import com.rhizomind.quickapp.Joiner;
 import com.rhizomind.quickapp.Main;
 import com.rhizomind.quickapp.GenerateFixtures;
 import java.io.File;
@@ -51,7 +52,8 @@ public class TestCommand implements Callable<Integer> {
         if (manifest.getValidator() == null) {
             System.out.println("No validator found for template " + manifest.getName() + ".");
         } else {
-            String command = "docker run "
+            String command = "docker run --rm "
+                    + " " + Joiner.join(manifest.getValidator().getArgs()) + " "
                     + " -v " + outputDir.getAbsolutePath() + ":/opt/qa-test "
                     + " --workdir /opt/qa-test "
                     + " " + manifest.getValidator().getImage() + " "

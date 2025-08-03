@@ -189,6 +189,10 @@
         "parameterTypes": []
       },
       {
+        "name": "getArgs",
+        "parameterTypes": []
+      },
+      {
         "name": "getImage",
         "parameterTypes": []
       },
@@ -202,6 +206,12 @@
         "name": "setImage",
         "parameterTypes": [
           "java.lang.String"
+        ]
+      },
+      {
+        "name": "setArgs",
+        "parameterTypes": [
+          "java.util.List"
         ]
       }
     ]

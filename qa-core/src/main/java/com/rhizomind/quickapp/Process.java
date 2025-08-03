@@ -27,7 +27,7 @@ public class Process {
         Thread err = new Thread(() -> {
             try (BufferedReader r = new BufferedReader(
                     new InputStreamReader(process.getErrorStream()))) {
-                r.lines().forEach(System.err::println);
+                r.lines().forEach(log::error);
             } catch (IOException e) {
                 e.printStackTrace();
             }
