@@ -3,14 +3,22 @@ package com.rhizomind.quickapp;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class Process {
 
-    public static Integer execute(String command) throws InterruptedException, IOException {
-        log.info("Executing command: " + command);
-        ProcessBuilder builder = new ProcessBuilder("/bin/sh", "-c", command);
+    public static Integer execute(List<String> command) throws InterruptedException, IOException {
+        var shCommand = new ArrayList<String>();
+        shCommand.add("/bin/sh");
+        shCommand.add("-c");
+        shCommand.add(Joiner.join(command));
+
+        log.info("Executing process: " + shCommand);
+
+        ProcessBuilder builder = new ProcessBuilder(shCommand);
         java.lang.Process process = builder.start();
 
         // stdout

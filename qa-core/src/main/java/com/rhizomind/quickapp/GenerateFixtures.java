@@ -10,6 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,7 +48,7 @@ public class GenerateFixtures {
                 + (forceRewrite ? " --force " : "")
                 + join(manifest.getGenerator().getArgs());
 
-        if (Process.execute(command) != 0) {
+        if (Process.execute(List.of(command)) != 0) {
             throw new RuntimeException("Error executing generator: " + command);
         }
         return manifest;
