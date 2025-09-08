@@ -95,7 +95,7 @@
                     <imageName>qa</imageName>
                     <buildArgs>
                         <arg>--static</arg>
-                        <arg>--enable-url-protocols=http</arg>
+                        <arg>--enable-url-protocols=http,https</arg>
                     </buildArgs>
                 </configuration>
             </plugin>
