@@ -27,7 +27,7 @@
         <repository>
             <id>maven-releases</id>
             <name>Solidify Quick-App releases repository</name>
-            <url>https://nexus.solidify.account.deploy-sphere.cloud/repository/solidify-qa-releases/</url>
+            <url>https://nexus.solidify.account.deploy-sphere.cloud/repository/qa-maven-releases/</url>
         </repository>
     </distributionManagement>
 
