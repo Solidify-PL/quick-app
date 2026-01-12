@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.rhizomind.quickapp</groupId>
@@ -17,17 +19,17 @@
     </properties>
 
     <scm>
-        <url>https://bitbucket.org/solidify-pl/quick-app-v2</url>
-        <connection>scm:git:git://ssh@bitbucket.org/solidify-pl/quick-app-v2.git</connection>
-        <developerConnection>scm:git:ssh://git@bitbucket.org/solidify-pl/quick-app-v2.git</developerConnection>
-      <tag>HEAD</tag>
-  </scm>
+        <connection>scm:git:${project.scm.url}</connection>
+        <developerConnection>scm:git:${project.scm.url}</developerConnection>
+        <url>https://github.com/Solidify-PL/quick-app.git</url>
+    </scm>
 
     <distributionManagement>
         <repository>
             <id>maven-releases</id>
             <name>Solidify Quick-App releases repository</name>
-            <url>https://nexus.solidify.account.deploy-sphere.cloud/repository/qa-maven-releases/</url>
+            <url>https://nexus.solidify.account.deploy-sphere.cloud/repository/qa-maven-releases/
+            </url>
         </repository>
     </distributionManagement>
 
