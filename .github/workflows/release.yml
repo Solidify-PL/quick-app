@@ -1,0 +1,152 @@
+name: Release
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}   # jeden "grupowy lock" na branch
+  cancel-in-progress: true           # anuluje buildy w toku
+
+jobs:
+  maven-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM (latest stable)
+        uses: actions/setup-java@v4
+        with:
+          distribution: graalvm
+          java-version: 21
+          cache: maven
+
+      - name: Print environment info
+        run: |
+          echo "OS: $(uname -s)"
+          echo "ARCH: $(uname -m)"
+          echo "JAVA_HOME: $JAVA_HOME"
+          java -version
+
+      - name: Maven compile
+        run: mvn -B compile
+
+      - name: Maven unit tests
+        run: mvn -B test
+
+      - name: Maven integration tests (Failsafe)
+        run: mvn -B test-compile failsafe:integration-test failsafe:verify
+
+  build-jars:
+    needs: maven-compile
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      packages: write
+
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Prepare & Perform Release
+        env:
+          GITREPO_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          JAVA_HOME: /usr/lib/jvm/java-21-openjdk/
+        uses: qcastel/github-actions-maven-release@70725f21eb1049fbf049470e72efbcd5d1528f35
+        with:
+          maven-servers: |
+            [
+              {
+                "id": "maven-releases",
+                "username": "${{ secrets.NEXUS_USERNAME }}",
+                "password": "${{ secrets.NEXUS_PASSWORD }}"
+              }
+            ]
+
+  build-native:
+    needs: maven-compile
+
+    permissions:
+      contents: write
+
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Linux
+          - os: linux
+            arch: amd64
+            runner: ubuntu-latest
+          - os: linux
+            arch: arm64
+            runner: ubuntu-24.04-arm
+
+          # Windows (amd64 only)
+          - os: windows
+            arch: amd64
+            runner: windows-latest
+
+          # macOS (Apple Silicon only)
+          - os: macos
+            arch: arm64
+            runner: macos-14
+
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+
+      - name: Set up GraalVM (latest stable)
+        uses: actions/setup-java@v4
+        with:
+          distribution: graalvm
+          java-version: 21
+          cache: maven
+
+      - name: Print matrix values
+        run: |
+          echo "OS:     ${{ matrix.os }}"
+          echo "ARCH:   ${{ matrix.arch }}"
+          echo "RUNNER: ${{ matrix.runner }}"
+          mvn package -DskipTests -DskipIntegrationTests -P native,${{ matrix.os }}-${{ matrix.arch }}
+
+      - name: Get version from pom.xml
+        id: get_version
+        shell: bash
+        run: |
+          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+
+      - name: Prepare binary for upload
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" == "windows" ]; then
+            cp qa-ctl/target/qa.exe qa-${{ matrix.os }}-${{ matrix.arch }}.exe
+          else
+            cp qa-ctl/target/qa qa-${{ matrix.os }}-${{ matrix.arch }}
+          fi
+
+      - name: Compress binaries
+        shell: bash
+        run: |
+          if [ "${{ matrix.os }}" == "windows" ]; then
+            7z a -tzip qa-${{ matrix.os }}-${{ matrix.arch }}.zip qa-${{ matrix.os }}-${{ matrix.arch }}.exe
+          else
+            tar -czf qa-${{ matrix.os }}-${{ matrix.arch }}.tar.gz qa-${{ matrix.os }}-${{ matrix.arch }}
+          fi
+
+      - name: Upload Release Asset
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.get_version.outputs.version }}
+          draft: false
+          prerelease: false
+          files: |
+            qa-${{ matrix.os }}-${{ matrix.arch }}.tar.gz
+            qa-${{ matrix.os }}-${{ matrix.arch }}.zip
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
