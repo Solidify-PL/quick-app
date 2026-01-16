@@ -35,9 +35,9 @@ import picocli.CommandLine.Option;
 )
 public class Main implements Runnable {
 
-    @Option(names = "--config-file", description = "Ścieżka do pliku konfiguracyjnego", scope = INHERIT, defaultValue = "${HOME}/.config/quick-app/repositories.yaml")
+    @Option(names = "--config-file", description = "Path to the configuration file", scope = INHERIT, defaultValue = "${HOME}/.config/quick-app/repositories.yaml")
     private String configPath;
-    @Option(names = "--cache-dir", description = "Ścieżka do pliku konfiguracyjnego", scope = INHERIT, defaultValue = "${HOME}/.cache/quick-app")
+    @Option(names = "--cache-dir", description = "Path to the cache directory", scope = INHERIT, defaultValue = "${HOME}/.cache/quick-app")
     private String cacheDir;
 
     private Config config;

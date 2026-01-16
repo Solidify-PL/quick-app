@@ -15,10 +15,10 @@ import picocli.CommandLine.ParentCommand;
 )
 public class RepoAddCommand implements Callable<Integer> {
 
-    @Parameters(index = "0", description = "Nazwa repozytorium QuickApp.")
+    @Parameters(index = "0", description = "QuickApp repository name.")
     private String repoName;
 
-    @Parameters(index = "1", description = "URL repozytorium QuickApp.")
+    @Parameters(index = "1", description = "QuickApp repository URL.")
     private URL repoUrl;
 
     @ParentCommand

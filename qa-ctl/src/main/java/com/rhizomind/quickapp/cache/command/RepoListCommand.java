@@ -26,11 +26,11 @@ public class RepoListCommand implements Callable<Integer> {
 
     public static void printReposAsTable(List<Repo> repos) {
         if (repos == null || repos.isEmpty()) {
-            System.out.println("Brak repozytoriów do wyświetlenia.");
+            System.out.println("No repositories to display.");
             return;
         }
 
-        // Określenie maksymalnej długości dla wyrównania kolumn
+        // Determine maximum length for column alignment
         int maxNameLength = "Name".length();
         int maxUrlLength = "URL".length();
         for (Repo repo : repos) {
@@ -40,24 +40,24 @@ public class RepoListCommand implements Callable<Integer> {
                     repo.getUrl() != null ? repo.getUrl().toString().length() : 0);
         }
 
-        // Budowanie formatu dla nagłówków i wierszy
+        // Build format for headers and rows
         String format = "| %-" + maxNameLength + "s | %-" + maxUrlLength + "s |%n";
         String separator =
                 "+" + "-".repeat(maxNameLength + 2) + "+" + "-".repeat(maxUrlLength + 2) + "+";
 
-        // Drukowanie nagłówków
+        // Print headers
         System.out.println(separator);
         System.out.printf(format, "Name", "URL");
         System.out.println(separator);
 
-        // Drukowanie wierszy
+        // Print rows
         for (Repo repo : repos) {
             String name = repo.getName() != null ? repo.getName() : "";
             String url = repo.getUrl() != null ? repo.getUrl().toString() : "";
             System.out.printf(format, name, url);
         }
 
-        // Drukowanie dolnej krawędzi tabeli
+        // Print table bottom border
         System.out.println(separator);
     }
 }

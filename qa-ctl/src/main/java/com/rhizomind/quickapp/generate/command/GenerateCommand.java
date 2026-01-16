@@ -32,8 +32,8 @@ public class GenerateCommand implements Callable<Integer> {
     private File valuesFile;
 
     @Option(names = {"--value"},
-            description = "Parametry nadpisujace wartosci z pliku values --value <nazwa>=<wartość>",
-            paramLabel = "<nazwa>=<wartość>")
+            description = "Parameters overriding values from the values file --value <name>=<value>",
+            paramLabel = "<name>=<value>")
     private Map<String, String> values = new HashMap<>();
 
     @Option(names = {"-o",

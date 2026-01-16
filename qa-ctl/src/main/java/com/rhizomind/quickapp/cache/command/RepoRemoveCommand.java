@@ -12,7 +12,7 @@ import picocli.CommandLine.ParentCommand;
 )
 public class RepoRemoveCommand implements Callable<Integer> {
 
-    @Parameters(index = "0", description = "Nazwa repozytorium QuickApp.")
+    @Parameters(index = "0", description = "QuickApp repository name.")
     private String repoName;
 
     @ParentCommand

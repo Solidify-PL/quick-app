@@ -13,7 +13,7 @@ public class Directories {
             // Tworzy katalog, jeśli nie istnieje
             Files.createDirectories(cacheDir.toPath());
         } catch (Exception e) {
-            throw new RuntimeException("Nie udało się utworzyć katalogu: " + cacheDir, e);
+            throw new RuntimeException("Could not create directory: " + cacheDir, e);
         }
         return cacheDir;
     }
@@ -37,7 +37,7 @@ public class Directories {
                 cachePath = Paths.get(userHome, ".cache", "quick-app");
             }
         } else {
-            throw new RuntimeException("Nieobsługiwany system operacyjny: " + os);
+            throw new RuntimeException("Unsupported operating system: " + os);
         }
 
         return cachePath.toFile();
@@ -64,7 +64,7 @@ public class Directories {
                 configPath = Paths.get(userHome, ".config", "quick-app");
             }
         } else {
-            throw new RuntimeException("Nieobsługiwany system operacyjny: " + os);
+            throw new RuntimeException("Unsupported operating system: " + os);
         }
 
         try {
@@ -72,7 +72,7 @@ public class Directories {
             Files.createDirectories(configPath);
             return configPath;
         } catch (Exception e) {
-            throw new RuntimeException("Nie udało się utworzyć katalogu: " + configPath, e);
+            throw new RuntimeException("Could not create directory: " + configPath, e);
         }
     }
 

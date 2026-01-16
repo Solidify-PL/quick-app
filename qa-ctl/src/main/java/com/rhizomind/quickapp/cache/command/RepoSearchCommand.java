@@ -11,11 +11,11 @@ import picocli.CommandLine.ParentCommand;
 @CommandLine.Command(
         name = "search",
         mixinStandardHelpOptions = true,
-        description = "Search for template is local repository"
+        description = "Search for templates in a local repository"
 )
 public class RepoSearchCommand implements Callable<Integer> {
 
-    @Parameters(index = "0", description = "Nazwa repozytorium QuickApp.")
+    @Parameters(index = "0", description = "QuickApp repository name.")
     private String repoName;
 
     @ParentCommand
@@ -38,12 +38,12 @@ public class RepoSearchCommand implements Callable<Integer> {
     }
 
     private void printManifestTable(List<Manifest> manifests) {
-        // Określenie szerokości kolumn
-        int nameWidth = 20; // Minimalna szerokość dla kolumny Name
-        int versionWidth = 10; // Minimalna szerokość dla kolumny Version
-        int descriptionWidth = 50; // Minimalna szerokość dla kolumny Description
+        // Column width determination
+        int nameWidth = 20; // Minimum width for Name column
+        int versionWidth = 10; // Minimum width for Version column
+        int descriptionWidth = 50; // Minimum width for Description column
 
-        // Obliczenie maksymalnej długości pól, aby dostosować szerokość kolumn
+        // Calculate maximum length of fields to adjust column width
         for (Manifest manifest : manifests) {
             nameWidth = Math.max(nameWidth,
                     manifest.getName() != null ? manifest.getName().length() : 0);
@@ -53,19 +53,19 @@ public class RepoSearchCommand implements Callable<Integer> {
                     manifest.getDescription() != null ? manifest.getDescription().length() : 0);
         }
 
-        // Budowanie formatu dla wierszy
+        // Build row format
         String format = "| %-" + nameWidth + "s | %-" + versionWidth + "s | %-" + descriptionWidth
                 + "s |%n";
         String separator =
                 "+" + "-".repeat(nameWidth + 2) + "+" + "-".repeat(versionWidth + 2) + "+"
                         + "-".repeat(descriptionWidth + 2) + "+";
 
-        // Wyświetlenie nagłówka
+        // Display header
         System.out.println(separator);
         System.out.printf(format, "Name", "Version", "Description");
         System.out.println(separator);
 
-        // Wyświetlenie wierszy
+        // Display rows
         for (Manifest manifest : manifests) {
             String name = manifest.getName() != null ? manifest.getName() : "";
             String version = manifest.getVersion() != null ? manifest.getVersion() : "";
@@ -73,7 +73,7 @@ public class RepoSearchCommand implements Callable<Integer> {
             System.out.printf(format, name, version, description);
         }
 
-        // Wyświetlenie dolnej krawędzi tabeli
+        // Display table bottom border
         System.out.println(separator);
     }
 }

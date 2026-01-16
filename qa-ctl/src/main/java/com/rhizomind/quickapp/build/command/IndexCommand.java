@@ -70,14 +70,14 @@ public class IndexCommand implements Callable<Integer> {
 
     public static Collection<File> getTemplatePackage(File directory) {
         if (directory == null || !directory.isDirectory()) {
-            throw new IllegalArgumentException("Podany plik musi być katalogiem.");
+            throw new IllegalArgumentException("The specified file must be a directory.");
         }
 
         File[] files = directory.listFiles((dir, name) -> isValidTarGzFileName(name));
 
         if (files == null) {
             throw new RuntimeException(
-                    "Nie udało się odczytać zawartości katalogu: " + directory.getAbsolutePath());
+                    "Failed to read the contents of the directory: " + directory.getAbsolutePath());
         }
         return List.of(files);
     }
@@ -85,10 +85,10 @@ public class IndexCommand implements Callable<Integer> {
     public static Manifest getManifest(File tarGzFile, String templateName) throws IOException {
         if (!tarGzFile.exists() || !tarGzFile.isFile()) {
             throw new IllegalArgumentException(
-                    "Podany plik nie istnieje: " + tarGzFile.getAbsolutePath());
+                    "The specified file does not exist: " + tarGzFile.getAbsolutePath());
         }
         if (!isValidTarGzFileName(tarGzFile.getName())) {
-            throw new IllegalArgumentException("Podany plik nie jest poprawnym plikiem tar.gz: "
+            throw new IllegalArgumentException("The specified file is not a valid tar.gz file: "
                     + tarGzFile.getAbsolutePath());
         }
 
@@ -128,11 +128,11 @@ public class IndexCommand implements Callable<Integer> {
     public static final Pattern PATTERN = Pattern.compile(regex);
 
     public static boolean isValidTarGzFileName(String fileName) {
-        // Wyrażenie regularne:
-        // ^([a-zA-Z0-9_-]+): Grupa 1 - dowolny ciąg alfanumeryczny z _ lub -
-        // - : Myślnik oddzielający
-        // \d+\.\d+(\.\d+)? : Wersja w formacie X.Y lub X.Y.Z
-        // \.tar\.gz$ : Końcówka .tar.gz
+        // Regular expression:
+        // ^([a-zA-Z0-9_-]+): Group 1 - any alphanumeric sequence with _ or -
+        // - : Separating hyphen
+        // \d+\.\d+(\.\d+)? : Version in X.Y or X.Y.Z format
+        // \.tar\.gz$ : .tar.gz extension
         return PATTERN.matcher(fileName).matches();
     }
 
@@ -140,8 +140,8 @@ public class IndexCommand implements Callable<Integer> {
         Matcher matcher = PATTERN.matcher(fileName);
 
         if (matcher.matches()) {
-            return matcher.group(1); // Zwraca grupę 1, czyli 'dowolna_nazwa'
+            return matcher.group(1); // Returns group 1, i.e., 'any_name'
         }
-        return null; // Nazwa ni
+        return null;
     }
 }

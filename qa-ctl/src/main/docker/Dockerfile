@@ -29,6 +29,6 @@ RUN echo "alias docker='podman'" >> /root/.bashrc
 COPY qa /app/qa
 WORKDIR /app
 
-# Ustaw powłokę Bash jako domyślną (aby alias działał)
+# Set Bash as the default shell (so that the alias works)
 SHELL ["/bin/bash", "-c"]
 CMD ["/bin/bash"]

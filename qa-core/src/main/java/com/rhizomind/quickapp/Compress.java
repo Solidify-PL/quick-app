@@ -78,13 +78,13 @@ public class Compress {
         } catch (UnsupportedOperationException e) {
             // Windows - zignoruj
         } catch (IOException e) {
-            System.err.println("Nie udało się ustawić chmod na " + file + ": " + e.getMessage());
+            System.err.println("Failed to set chmod on " + file + ": " + e.getMessage());
         }
     }
 
     public static File compress(File sourceDir) throws IOException {
         if (!sourceDir.isDirectory()) {
-            throw new IllegalArgumentException("Podana ścieżka nie jest katalogiem: " + sourceDir);
+            throw new IllegalArgumentException("The specified path is not a directory: " + sourceDir);
         }
 
         File tempZip = Files.createTempFile("archive-", ".zip").toFile();
