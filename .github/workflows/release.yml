@@ -41,6 +41,10 @@ jobs:
     needs: maven-compile
     runs-on: ubuntu-latest
 
+    outputs:
+      release_version: ${{ steps.get_version.outputs.release_version }}
+      dev_version: ${{ steps.get_version.outputs.dev_version }}
+
     permissions:
       contents: write
       packages: write
@@ -51,12 +55,41 @@ jobs:
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
+      - name: Get version from pom.xml
+        id: get_version
+        shell: bash
+        run: |
+          # Get current version from pom.xml (e.g., "0.5-SNAPSHOT")
+          CURRENT_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)
+
+          # Remove -SNAPSHOT to get base version (e.g., "0.5")
+          BASE_VERSION=$(echo "$CURRENT_VERSION" | sed 's/-SNAPSHOT$//')
+
+          # Split version into components and increment the last one
+          IFS='.' read -ra VERSION_PARTS <<< "$BASE_VERSION"
+          LAST_INDEX=$((${#VERSION_PARTS[@]} - 1))
+          VERSION_PARTS[$LAST_INDEX]=$((${VERSION_PARTS[$LAST_INDEX]} + 1))
+
+          # Construct next development version (e.g., "0.6-SNAPSHOT")
+          NEXT_DEV_VERSION=$(IFS='.'; echo "${VERSION_PARTS[*]}")-SNAPSHOT
+          echo "dev_version=$NEXT_DEV_VERSION" >> $GITHUB_OUTPUT
+
+
+          RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
+          # Add .0 patch version if version has only two components
+          if [[ $(echo "$RELEASE_VERSION" | grep -o '\.' | wc -l) -eq 1 ]]; then
+            RELEASE_VERSION="${RELEASE_VERSION}.0"
+          fi
+          echo "release_version=$RELEASE_VERSION" >> $GITHUB_OUTPUT
+
       - name: Prepare & Perform Release
         env:
           GITREPO_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           JAVA_HOME: /usr/lib/jvm/java-21-openjdk/
         uses: qcastel/github-actions-maven-release@70725f21eb1049fbf049470e72efbcd5d1528f35
         with:
+          maven-release-version-number: ${{ steps.get_version.outputs.release_version }}
+          maven-development-version-number: ${{ steps.get_version.outputs.dev_version }}
           maven-servers: |
             [
               {
@@ -67,7 +100,7 @@ jobs:
             ]
 
   build-native:
-    needs: maven-compile
+    needs: [ maven-compile, build-jars ]
 
     permissions:
       contents: write
@@ -113,13 +146,6 @@ jobs:
           echo "RUNNER: ${{ matrix.runner }}"
           mvn package -DskipTests -DskipIntegrationTests -P native,${{ matrix.os }}-${{ matrix.arch }}
 
-      - name: Get version from pom.xml
-        id: get_version
-        shell: bash
-        run: |
-          VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout | sed 's/-SNAPSHOT$//')
-          echo "version=$VERSION" >> $GITHUB_OUTPUT
-
       - name: Prepare binary for upload
         shell: bash
         run: |
@@ -141,7 +167,7 @@ jobs:
       - name: Upload Release Asset
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v${{ steps.get_version.outputs.version }}
+          tag_name: v${{ needs.build-jars.outputs.release_version }}
           draft: false
           prerelease: false
           files: |

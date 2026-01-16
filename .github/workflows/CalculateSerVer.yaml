@@ -1,0 +1,31 @@
+name: CalculateSerVer
+
+on:
+  workflow_dispatch:
+
+concurrency:
+  group: release-${{ github.ref }}   # jeden "grupowy lock" na branch
+  cancel-in-progress: true           # anuluje buildy w toku
+
+jobs:
+  maven-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Semantic Version
+        id: version
+        uses: PaulHatch/semantic-version@v5.4.0
+        with:
+          debug: true
+
+      - name: Print version info
+        run: |
+          echo "New version: ${{ steps.version.outputs.version }}"
+          echo "Major:       ${{ steps.version.outputs.major }}"
+          echo "Minor:       ${{ steps.version.outputs.minor }}"
+          echo "Patch:       ${{ steps.version.outputs.patch }}"
+          echo "Tag:         ${{ steps.version.outputs.tag }}"
+
