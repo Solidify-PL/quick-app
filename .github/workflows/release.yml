@@ -98,6 +98,30 @@ jobs:
                 "password": "${{ secrets.NEXUS_PASSWORD }}"
               }
             ]
+      - name: create branch for patches
+        if: github.ref == 'refs/heads/master'
+        run: |
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git config user.name "github-actions[bot]"
+
+          git fetch origin
+
+          RELEASE_VERSION="${{ steps.get_version.outputs.release_version }}"
+          MAJOR_MINOR=$(echo "$RELEASE_VERSION" | sed -E 's/\.[0-9]+$//')
+          BRANCH_NAME="v${MAJOR_MINOR}.x"
+
+          git checkout -b "$BRANCH_NAME" HEAD~1
+
+          PATCH_VERSION="${MAJOR_MINOR}.1-SNAPSHOT"
+          mvn versions:set -DnewVersion="$PATCH_VERSION" -DgenerateBackupPoms=false -DprocessAllModules=true
+
+          git add .
+          git commit -m "Set version to $PATCH_VERSION for patch branch"
+
+          git push origin "$BRANCH_NAME"
+
+          git checkout master
+
 
   build-native:
     needs: [ maven-compile, build-jars ]
