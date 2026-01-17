@@ -3,7 +3,7 @@
 
     <groupId>com.rhizomind.quickapp</groupId>
     <artifactId>qa</artifactId>
-    <version>0.6.0</version>
+    <version>0.6.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Quick-app</name>
     <modules>
