@@ -3,7 +3,7 @@
 
     <groupId>com.rhizomind.quickapp</groupId>
     <artifactId>qa</artifactId>
-    <version>0.6.0</version>
+    <version>0.7-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Quick-app</name>
     <modules>
@@ -20,7 +20,7 @@
         <connection>scm:git:${project.scm.url}</connection>
         <developerConnection>scm:git:${project.scm.url}</developerConnection>
         <url>https://github.com/Solidify-PL/quick-app.git</url>
-        <tag>v0.6.0</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
