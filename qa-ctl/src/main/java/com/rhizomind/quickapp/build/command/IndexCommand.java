@@ -25,7 +25,7 @@ import static com.rhizomind.quickapp.Commons.OBJECT_MAPPER;
 @CommandLine.Command(
         name = "index",
         mixinStandardHelpOptions = true,
-        description = "Index folder with template packages"
+        description = "Generate an index file (index.yaml) from template packages in a specified directory"
 )
 public class IndexCommand implements Callable<Integer> {
 
@@ -36,6 +36,9 @@ public class IndexCommand implements Callable<Integer> {
     @CommandLine.Option(names = {"-o",
             "--output"}, description = "Output directory (input by default) ")
     private File outputDir;
+
+    @CommandLine.ParentCommand
+    TemplatesCommand parent;
 
     @Override
     public Integer call() throws Exception {

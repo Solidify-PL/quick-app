@@ -23,6 +23,9 @@ public class PackageCommand implements Callable<Integer> {
             "--output"}, description = "Output directory (Workdir by default) ")
     private File outputDir;
 
+    @CommandLine.ParentCommand
+    TemplatesCommand parent;
+
     @Override
     public Integer call() throws Exception {
         var templateDir = this.templateDir == null ? new File(".") : this.templateDir;

@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 @CommandLine.Command(
         name = "package-all",
         mixinStandardHelpOptions = true,
-        description = "Packages working directory (if it's a proper template) into tar.gz file"
+        description = "Packages all valid templates from a directory into tar.gz files"
 )
 public class PackageAllCommand implements Callable<Integer> {
 
@@ -21,6 +21,9 @@ public class PackageAllCommand implements Callable<Integer> {
     @CommandLine.Option(names = {"-o",
             "--output"}, description = "Output directory (Workdir by default) ")
     private File outputDir;
+
+    @CommandLine.ParentCommand
+    TemplatesCommand parent;
 
     @Override
     public Integer call() throws Exception {

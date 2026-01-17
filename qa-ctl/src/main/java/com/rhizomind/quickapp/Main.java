@@ -1,33 +1,27 @@
 package com.rhizomind.quickapp;
 
-import static com.rhizomind.quickapp.Directories.defaultConfigFile;
-import static com.rhizomind.quickapp.Directories.ensureCacheDirectoryExists;
-import static com.rhizomind.quickapp.Directories.ensureConfigFileExists;
-import static com.rhizomind.quickapp.Directories.getDefaultCacheDir;
-import static picocli.CommandLine.ScopeType.INHERIT;
-
-import com.rhizomind.quickapp.generate.command.DescribeCommand;
-import com.rhizomind.quickapp.build.command.IndexCommand;
 import com.rhizomind.quickapp.build.command.PackageAllCommand;
-import com.rhizomind.quickapp.build.command.PackageCommand;
-import com.rhizomind.quickapp.generate.command.TestCommand;
+import com.rhizomind.quickapp.build.command.TemplatesCommand;
+import com.rhizomind.quickapp.build.command.TestCommand;
 import com.rhizomind.quickapp.cache.Config;
 import com.rhizomind.quickapp.cache.command.RepoCommand;
+import com.rhizomind.quickapp.generate.command.DescribeCommand;
 import com.rhizomind.quickapp.generate.command.GenerateCommand;
-import java.io.File;
-import java.io.IOException;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
+
+import java.io.File;
+import java.io.IOException;
+
+import static com.rhizomind.quickapp.Directories.*;
+import static picocli.CommandLine.ScopeType.INHERIT;
 
 @CommandLine.Command(
         name = "qa",
         subcommands = {
                 GenerateCommand.class,
-                PackageCommand.class,
-                IndexCommand.class,
+                TemplatesCommand.class,
                 RepoCommand.class,
-                PackageAllCommand.class,
-                TestCommand.class,
                 DescribeCommand.class
         },
         description = "QuickApp CLI tool",

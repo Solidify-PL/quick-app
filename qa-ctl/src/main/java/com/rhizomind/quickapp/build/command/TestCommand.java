@@ -1,4 +1,4 @@
-package com.rhizomind.quickapp.generate.command;
+package com.rhizomind.quickapp.build.command;
 
 import static com.rhizomind.quickapp.Process.execute;
 import static com.rhizomind.quickapp.cache.TemplateRef.isTemplateRef;
@@ -12,6 +12,8 @@ import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
+
+import com.rhizomind.quickapp.cache.command.RepoCommand;
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParentCommand;
@@ -19,7 +21,7 @@ import picocli.CommandLine.ParentCommand;
 @CommandLine.Command(
         name = "test",
         mixinStandardHelpOptions = true,
-        description = "test template"
+        description = "Test a template by generating fixtures and running the configured validator"
 )
 public class TestCommand implements Callable<Integer> {
 
@@ -27,7 +29,7 @@ public class TestCommand implements Callable<Integer> {
     private String templateDirOrName;
 
     @ParentCommand
-    Main parent;
+    TemplatesCommand parent;
 
     @Override
     public Integer call() throws Exception {
