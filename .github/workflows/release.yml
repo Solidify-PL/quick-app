@@ -82,6 +82,15 @@ jobs:
           fi
           echo "release_version=$RELEASE_VERSION" >> $GITHUB_OUTPUT
 
+      - name: Generate Changelog
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: >
+            --latest
+            --tag v${{ needs.build-jars.outputs.release_version }}
+            --output changelog.md
+
       - name: Prepare & Perform Release
         env:
           GITREPO_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -98,6 +107,13 @@ jobs:
                 "password": "${{ secrets.NEXUS_PASSWORD }}"
               }
             ]
+
+      - name: Publish changelog
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v${{ steps.get_version.outputs.release_version }} --notes-file changelog.md
+
       - name: create branch for patches
         if: github.ref == 'refs/heads/master'
         run: |
@@ -119,7 +135,6 @@ jobs:
           git commit -am "Set version to $PATCH_VERSION for patch branch"
 
           git push origin "$BRANCH_NAME"
-
           git checkout master
 
 
