@@ -1,20 +1,22 @@
+# Quick-app (qa)
+
+Quick-app is a modern CLI tool designed to streamline the process of generating and managing application structures.
+
+## About the project
+
+The operating principle of **Quick-app** is inspired by how **Helm** works in the Kubernetes world. Similar to how Helm
+manages "charts", Quick-app allows you to define component templates. This enables you to easily repeat and parameterize
+the process of creating components for your system or source code.
+
+The project consists of two main modules:
+
+- `qa-core`: The core business logic and template engine.
+- `qa-ctl`: Command-line interface (CLI) enabling interaction with the tool.
+
+## Installation
+
+You can quickly install Quick-app using the following command:
 
 ```bash
-# latop
-export SOLIDIFY_QA_REPO=/home/tomasz/work/rhizomind/quick-app/data/qa-repository
-export SOLIDIFY_TEMPLATES_DIR=/home/tomasz/work/rhizomind/quick-app/sources/templates
-
-# desktop
-#export SOLIDIFY_QA_REPO=/solidify/solidify/spaces/quickapp/data/qa-repo
-#export SOLIDIFY_TEMPLATES_DIR=/solidify/solidify/spaces/quickapp/source/templates
-
-qa package-all --templates $SOLIDIFY_TEMPLATES_DIR --output $SOLIDIFY_QA_REPO
-qa index --input $SOLIDIFY_QA_REPO
-rm -rf ~/.cache/quick-app
-qa repo update
-
-qa repo remove solidify
-qa repo add solidify file:$SOLIDIFY_QA_REPO
-qa repo search solidify
-qa repo update
+curl -sSfL https://get.quick-app.solidify.pl/ | bash
 ```
