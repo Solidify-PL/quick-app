@@ -11,7 +11,7 @@ import java.io.IOException;
 
 @CommandLine.Command(
         name = "templates",
-        subcommands = {IndexCommand.class, PackageCommand.class, PackageAllCommand.class, TestCommand.class},
+        subcommands = {InitCommand.class, PackageCommand.class, TestCommand.class, PackageAllCommand.class, IndexCommand.class},
         description = "package, test, index templates",
         mixinStandardHelpOptions = true
 )
