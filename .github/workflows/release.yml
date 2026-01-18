@@ -189,18 +189,18 @@ jobs:
         shell: bash
         run: |
           if [ "${{ matrix.os }}" == "windows" ]; then
-            cp qa-ctl/target/qa.exe qa-${{ matrix.os }}-${{ matrix.arch }}.exe
+            cp qa-ctl/target/qa.exe qa.exe
           else
-            cp qa-ctl/target/qa qa-${{ matrix.os }}-${{ matrix.arch }}
+            cp qa-ctl/target/qa qa
           fi
 
       - name: Compress binaries
         shell: bash
         run: |
           if [ "${{ matrix.os }}" == "windows" ]; then
-            7z a -tzip qa-${{ matrix.os }}-${{ matrix.arch }}.zip qa-${{ matrix.os }}-${{ matrix.arch }}.exe
+            7z a -tzip qa-v${{ needs.build-jars.outputs.release_version }}-${{ matrix.os }}-${{ matrix.arch }}.zip qa.exe
           else
-            tar -czf qa-${{ matrix.os }}-${{ matrix.arch }}.tar.gz qa-${{ matrix.os }}-${{ matrix.arch }}
+            tar -czf qa-v${{needs.build-jars.outputs.release_version}}-${{ matrix.os }}-${{ matrix.arch }}.tar.gz qa
           fi
 
       - name: Upload Release Asset
@@ -210,8 +210,8 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            qa-${{ matrix.os }}-${{ matrix.arch }}.tar.gz
-            qa-${{ matrix.os }}-${{ matrix.arch }}.zip
+            qa-v${{needs.build-jars.outputs.release_version}}-${{ matrix.os }}-${{ matrix.arch }}.tar.gz
+            qa-v${{needs.build-jars.outputs.release_version}}-${{ matrix.os }}-${{ matrix.arch }}.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
