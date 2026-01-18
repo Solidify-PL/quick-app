@@ -89,7 +89,7 @@ jobs:
           config: cliff.toml
           args: >
             --latest
-            --tag v${{ needs.build-jars.outputs.release_version }}
+            --tag v${{ steps.get_version.outputs.release_version }}
             --output changelog.md
 
       - name: Prepare & Perform Release
