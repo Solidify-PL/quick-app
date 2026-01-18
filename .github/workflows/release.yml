@@ -88,7 +88,7 @@ jobs:
         with:
           config: cliff.toml
           args: >
-            --latest
+            --unreleased
             --tag v${{ steps.get_version.outputs.release_version }}
             --output changelog.md
 
