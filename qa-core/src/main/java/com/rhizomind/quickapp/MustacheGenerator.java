@@ -2,8 +2,8 @@ package com.rhizomind.quickapp;
 
 import com.github.mustachejava.DefaultMustacheFactory;
 import com.github.mustachejava.Mustache;
+import com.github.mustachejava.reflect.ReflectionObjectHandler;
 import com.rhizomind.quickapp.model.Generator;
-import lombok.RequiredArgsConstructor;
 
 import java.io.*;
 import java.nio.file.Files;
@@ -15,13 +15,24 @@ import java.util.regex.Pattern;
 import static java.nio.file.StandardCopyOption.COPY_ATTRIBUTES;
 import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
 
-@RequiredArgsConstructor
 public class MustacheGenerator implements Generator {
 
     private final DefaultMustacheFactory mf4Paths = new DefaultMustacheFactory();
     private final DefaultMustacheFactory mf4Files = new DefaultMustacheFactory();
 
     private final MustacheGeneratorConfig config;
+
+    public MustacheGenerator(MustacheGeneratorConfig config) {
+        this.config = config;
+        this.mf4Paths.setObjectHandler(new ReflectionObjectHandler() {
+
+            @Override
+            public String stringify(Object object) {
+                return super.stringify(object)
+                        .replace(".", File.separator);
+            }
+        });
+    }
 
     @Override
     public void generate(Path srcBasePath, Path dstBasePath, Map<String, String> values) throws Exception {
@@ -65,8 +76,9 @@ public class MustacheGenerator implements Generator {
     }
 
     private Path calculateDstPath(Path srcBasePath, Path dstBasePath, Map<String, String> parameters, Path srcPath) {
+        String target = executeMustache(srcBasePath.relativize(srcPath).toString(), parameters);
         return dstBasePath.resolve(
-                executeMustache(srcBasePath.relativize(srcPath).toString(), parameters)
+                target
         );
     }
 
