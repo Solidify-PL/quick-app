@@ -1,0 +1,20 @@
+---
+name: "template-name"
+version: "1.0.0"
+description: "Template description"
+tags:
+  - "tag1"
+  - "tag2"
+
+generator:
+  mustache:
+    excludeRegExp:
+      - ".*jar"
+values:
+  schema: "parameters-schema.json"
+  defaults: "parameters-defaults.yaml"
+validator:
+  image: "node:22-alpine"
+  args:
+    - "--entrypoint sh"
+  command: "-c \"npm install && npm test\""

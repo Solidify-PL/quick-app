@@ -1,18 +1,21 @@
 package com.rhizomind.quickapp.generate.command;
 
-import static com.rhizomind.quickapp.cache.TemplateRef.isTemplateRef;
-import static com.rhizomind.quickapp.cache.TemplateRef.parse;
-
+import com.rhizomind.quickapp.Generators;
 import com.rhizomind.quickapp.Main;
-import com.rhizomind.quickapp.GenerateFixtures;
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.concurrent.Callable;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParentCommand;
+
+import java.io.File;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.concurrent.Callable;
+
+import static com.rhizomind.quickapp.cache.TemplateRef.isTemplateRef;
+import static com.rhizomind.quickapp.cache.TemplateRef.parse;
 
 /**
  * quick-app --values=values.yaml -value param1=value1 --template=./spring --output=./output
@@ -25,6 +28,7 @@ import picocli.CommandLine.ParentCommand;
 )
 public class GenerateCommand implements Callable<Integer> {
 
+    private static final Logger log = LoggerFactory.getLogger(GenerateCommand.class);
     @Parameters(index = "0", description = "template directory or name (<repoName>/<templateName>[:version])")
     private String templateDirOrName;
 
@@ -55,20 +59,21 @@ public class GenerateCommand implements Callable<Integer> {
             outputDir.mkdirs();
         }
 
-        File result;
+        File templateDir;
         if (isTemplateRef(templateDirOrName)) {
             var templateRef = parse(templateDirOrName);
 
             var template = parent.getConfig()
                     .getRepoCache(templateRef.getRepository())
-                    .orElseThrow(() -> new RuntimeException("Repository " + templateRef.getRepository()+ " not found."))
+                    .orElseThrow(() -> new RuntimeException("Repository " + templateRef.getRepository() + " not found."))
                     .getTemplate(templateRef.getName(), templateRef.getVersion());
             var tmpTemplateDir = template.extractTemplate();
-            result = new File(tmpTemplateDir, templateRef.getName());
+            templateDir = new File(tmpTemplateDir, templateRef.getName());
         } else {
-            result = new File(templateDirOrName);
+            templateDir = new File(templateDirOrName);
         }
-        GenerateFixtures.doGenerate(result, outputDir, forceRewrite, this.valuesFile, this.values);
+        log.info("generating based on a template in {}", templateDir.getAbsolutePath());
+        Generators.doGenerate(templateDir, outputDir, forceRewrite, this.valuesFile, this.values);
 
         return 0;
     }

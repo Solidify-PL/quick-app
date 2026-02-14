@@ -1,7 +1,7 @@
 package com.rhizomind.quickapp.build.command;
 
 import com.rhizomind.quickapp.Commons;
-import com.rhizomind.quickapp.model.GeneratorConfig;
+import com.rhizomind.quickapp.MustacheGeneratorConfig;
 import com.rhizomind.quickapp.model.Manifest;
 import com.rhizomind.quickapp.model.ValidatorConfig;
 import com.rhizomind.quickapp.model.ValuesConfig;
@@ -10,6 +10,7 @@ import picocli.CommandLine;
 
 import java.io.File;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -72,9 +73,7 @@ public class InitCommand implements Callable<Integer> {
         manifest.getValidator().setImage("node:22-alpine");
         manifest.getValidator().setArgs(List.of("--entrypoint sh"));
         manifest.getValidator().setCommand("-c \"npm install && npm test\"");
-        manifest.setGenerator(new GeneratorConfig());
-        manifest.getGenerator().setImage("solidify-qa-docker.dspr.deploy-sphere.cloud/quick-app/mustache-cli:latest");
-        manifest.getGenerator().setArgs(List.of("--exclude=\".*(jar|png|svg|ico)$\"", "--exclude=\"\\.git\\/.*$\""));
+        manifest.setGenerator(new MustacheGeneratorConfig(Set.of(".*jar")));
 
         String defaultSchema = """
                 {

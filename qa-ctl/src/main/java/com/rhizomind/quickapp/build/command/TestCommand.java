@@ -4,16 +4,15 @@ import static com.rhizomind.quickapp.Process.execute;
 import static com.rhizomind.quickapp.cache.TemplateRef.isTemplateRef;
 import static com.rhizomind.quickapp.cache.TemplateRef.parse;
 
-import com.rhizomind.quickapp.GenerateFixtures;
+import com.rhizomind.quickapp.Generators;
 import com.rhizomind.quickapp.Joiner;
-import com.rhizomind.quickapp.Main;
+
 import java.io.File;
 import java.nio.file.Files;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import com.rhizomind.quickapp.cache.command.RepoCommand;
 import picocli.CommandLine;
 import picocli.CommandLine.Parameters;
 import picocli.CommandLine.ParentCommand;
@@ -48,7 +47,7 @@ public class TestCommand implements Callable<Integer> {
         } else {
             result = new File(templateDirOrName);
         }
-        var manifest = GenerateFixtures.doGenerate(result, outputDir, true, null,
+        var manifest = Generators.doGenerate(result, outputDir, true, null,
                 new HashMap<>()
         );
 

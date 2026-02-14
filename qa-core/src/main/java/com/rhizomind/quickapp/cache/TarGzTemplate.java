@@ -3,7 +3,7 @@ package com.rhizomind.quickapp.cache;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.rhizomind.quickapp.Commons;
-import com.rhizomind.quickapp.Compress;
+import com.rhizomind.quickapp.Compression;
 import com.rhizomind.quickapp.model.Manifest;
 import java.io.File;
 import java.io.FileInputStream;
@@ -24,7 +24,7 @@ public class TarGzTemplate implements Template {
     }
 
     public File extractTemplate() throws IOException {
-        return Compress.extractTemplate(templateTarGzPackage);
+        return Compression.extractTemplate(templateTarGzPackage);
     }
 
     @Override

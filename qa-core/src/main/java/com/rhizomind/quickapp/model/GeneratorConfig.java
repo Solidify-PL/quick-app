@@ -1,12 +1,22 @@
 package com.rhizomind.quickapp.model;
 
-import java.util.List;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.rhizomind.quickapp.DockerGeneratorConfig;
+import com.rhizomind.quickapp.MustacheGeneratorConfig;
 import lombok.Data;
 
 @Data
-public class GeneratorConfig {
 
-    private String image;
-    private List<String> args;
+@JsonTypeInfo(
+        use = JsonTypeInfo.Id.NAME,
+        include = JsonTypeInfo.As.WRAPPER_OBJECT
+)
+@JsonSubTypes({
+        @JsonSubTypes.Type(value = MustacheGeneratorConfig.class, name = "mustache"),
+        @JsonSubTypes.Type(value = DockerGeneratorConfig.class, name = "docker")
+})
+public abstract class GeneratorConfig {
 
+    public abstract Generator createGenerator();
 }

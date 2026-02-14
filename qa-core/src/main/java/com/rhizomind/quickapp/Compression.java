@@ -25,7 +25,7 @@ import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorInputStream;
 import org.apache.commons.compress.compressors.gzip.GzipCompressorOutputStream;
 
-public class Compress {
+public class Compression {
 
     public static File extractTemplate(File tarGzFile) throws IOException {
         var dstDir = Files.createTempDirectory(tarGzFile.getName()).toFile();

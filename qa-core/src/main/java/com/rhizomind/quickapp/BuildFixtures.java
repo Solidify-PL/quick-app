@@ -81,7 +81,7 @@ public class BuildFixtures {
                 manifest.getName() + "-" + manifest.getVersion() + ".tar.gz");
         log.info("Packaging template  into " + targetFile + " file...");
 
-        Compress.createTarGz(templateDir, manifest.getName(), targetFile);
+        Compression.createTarGz(templateDir, manifest.getName(), targetFile);
         log.info("Template packaged into " + targetFile + " file successfully.");
     }
 }

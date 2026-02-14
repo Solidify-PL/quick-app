@@ -1,9 +1,5 @@
 {
   "resources":{
-  "includes":[
-    {
-      "pattern":".*/manifest01.*yaml"
-    }
-  ]},
+  "includes":[]},
   "bundles":[]
 }
