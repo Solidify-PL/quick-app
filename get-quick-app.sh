@@ -22,7 +22,7 @@ fatal()   { echo -e "${RED}[ERROR]${NC} $*" >&2; exit 1; }
 # ---------------------------------------------
 #      Configuration via environment variables
 # ---------------------------------------------
-: "${INSTALL_DIR:=/usr/local/bin}"
+INSTALL_DIR="${HOME}/.local/bin"
 : "${VERSION:=latest}"
 : "${OS:=}"
 : "${ARCH:=}"
@@ -134,17 +134,44 @@ esac
 
 chmod 0755 "./qa"
 
-if [ -w "$INSTALL_DIR" ]; then
-    mv "./qa" "${INSTALL_DIR}/${PROG}"
-else
-    sudo mv "./qa" "${INSTALL_DIR}/${PROG}" || fatal "No write permissions for ${INSTALL_DIR}"
-fi
+mkdir -p "$INSTALL_DIR"
+mv "./qa" "${INSTALL_DIR}/${PROG}" || fatal "No write permissions for ${INSTALL_DIR}"
 
-success "Installed ${PROG} → ${INSTALL_DIR}/${PROG}"
-info "Version:"
-${INSTALL_DIR}/${PROG} --version 2>/dev/null || ${INSTALL_DIR}/${PROG} version 2>/dev/null || true
+success "Installed ${PROG} ${VERSION} → ${INSTALL_DIR}/${PROG}"
 
 echo
 echo "Done! Run:"
 echo "   qa --help"
 echo
+
+# ---------------------------------------------
+#      PATH check
+# ---------------------------------------------
+if ! echo ":${PATH}:" | grep -q ":${INSTALL_DIR}:"; then
+    echo
+    warn "${INSTALL_DIR} is not in your PATH."
+    echo
+    echo "Run the following command to add it permanently and apply immediately:"
+    echo
+
+    SHELL_NAME="$(basename "${SHELL:-unknown}")"
+    case "$SHELL_NAME" in
+        zsh)
+            echo "    echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.zshrc && source ~/.zshrc"
+            ;;
+        fish)
+            echo "    fish_add_path ~/.local/bin"
+            ;;
+        bash)
+            if [ "$OS" = "macos" ]; then
+                echo "    echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.bash_profile && source ~/.bash_profile"
+            else
+                echo "    echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.bashrc && source ~/.bashrc"
+            fi
+            ;;
+        *)
+            echo "    echo 'export PATH=\"\$HOME/.local/bin:\$PATH\"' >> ~/.profile && . ~/.profile"
+            ;;
+    esac
+    echo
+fi
