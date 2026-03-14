@@ -25,7 +25,8 @@ import static picocli.CommandLine.ScopeType.INHERIT;
                 DescribeCommand.class
         },
         description = "QuickApp CLI tool",
-        mixinStandardHelpOptions = true
+        mixinStandardHelpOptions = true,
+        versionProvider = VersionProvider.class
 )
 public class Main implements Runnable {
 

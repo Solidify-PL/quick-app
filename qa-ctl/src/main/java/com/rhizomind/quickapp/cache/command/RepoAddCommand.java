@@ -27,7 +27,7 @@ public class RepoAddCommand implements Callable<Integer> {
     @Override
     public Integer call() throws Exception {
         System.out.println("Adding repository " + repoName + " to local list...");
-        parent.getConfig().addRepo(new Repo(repoName, repoUrl));
+        parent.getConfig().addRepo(new Repo(repoName, repoUrl, null));
 
         return 0;
     }
