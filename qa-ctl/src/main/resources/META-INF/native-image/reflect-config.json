@@ -17,8 +17,13 @@
   "queryAllDeclaredMethods":true
 },
 {
+  "name":"com.rhizomind.quickapp.VersionProvider",
+  "methods":[{"name":"<init>","parameterTypes":[] }]
+},
+{
   "name":"com.rhizomind.quickapp.MustacheGeneratorConfig",
   "allDeclaredFields":true,
+  "allDeclaredMethods":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"<init>","parameterTypes":["java.util.Set"] }]
@@ -107,14 +112,48 @@
   "methods":[{"name":"<init>","parameterTypes":[] }]
 },
 {
+  "name":"com.rhizomind.quickapp.DockerGeneratorConfig",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.util.List"] }]
+},
+{
+  "name":"com.rhizomind.quickapp.cache.Repo",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"<init>","parameterTypes":["java.lang.String","java.net.URL"] }]
+},
+{
+  "name":"com.rhizomind.quickapp.cache.RepoList",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"<init>","parameterTypes":["java.util.List"] }]
+},
+{
+  "name":"com.rhizomind.quickapp.cache.TemplateRef",
+  "allDeclaredFields":true,
+  "allDeclaredMethods":true,
+  "queryAllDeclaredMethods":true,
+  "queryAllDeclaredConstructors":true,
+  "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String"] }]
+},
+{
   "name":"com.rhizomind.quickapp.model.GeneratorConfig",
   "allDeclaredFields":true,
+  "allDeclaredMethods":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true
 },
 {
   "name":"com.rhizomind.quickapp.model.Manifest",
   "allDeclaredFields":true,
+  "allDeclaredMethods":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"<init>","parameterTypes":["java.lang.String","java.lang.String","java.lang.String","java.util.List","com.rhizomind.quickapp.model.GeneratorConfig","com.rhizomind.quickapp.model.ValuesConfig","com.rhizomind.quickapp.model.ValidatorConfig"] }]
@@ -122,6 +161,7 @@
 {
   "name":"com.rhizomind.quickapp.model.ValidatorConfig",
   "allDeclaredFields":true,
+  "allDeclaredMethods":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setCommand","parameterTypes":["java.lang.String"] }, {"name":"setImage","parameterTypes":["java.lang.String"] }]
@@ -129,6 +169,7 @@
 {
   "name":"com.rhizomind.quickapp.model.ValuesConfig",
   "allDeclaredFields":true,
+  "allDeclaredMethods":true,
   "queryAllDeclaredMethods":true,
   "queryAllDeclaredConstructors":true,
   "methods":[{"name":"<init>","parameterTypes":[] }, {"name":"setDefaults","parameterTypes":["java.lang.String"] }, {"name":"setSchema","parameterTypes":["java.lang.String"] }]
