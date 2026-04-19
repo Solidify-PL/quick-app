@@ -1,12 +1,11 @@
 package com.rhizomind.quickapp;
 
-import com.rhizomind.quickapp.build.command.PackageAllCommand;
 import com.rhizomind.quickapp.build.command.TemplatesCommand;
-import com.rhizomind.quickapp.build.command.TestCommand;
 import com.rhizomind.quickapp.cache.Config;
 import com.rhizomind.quickapp.cache.command.RepoCommand;
 import com.rhizomind.quickapp.generate.command.DescribeCommand;
 import com.rhizomind.quickapp.generate.command.GenerateCommand;
+import com.rhizomind.quickapp.model.ManifestLoadException;
 import picocli.CommandLine;
 import picocli.CommandLine.Option;
 
@@ -37,7 +36,17 @@ public class Main implements Runnable {
     private Config config;
 
     public static void main(String[] args) {
-        System.exit(new CommandLine(new Main()).execute(args));
+        System.exit(
+                new CommandLine(new Main())
+                        .setExecutionExceptionHandler((ex, cmd, parseResult) -> {
+                            if (ex instanceof ManifestLoadException) {
+                                cmd.getErr().println("error: " + ex.getMessage());
+                                return 1;
+                            }
+                            throw ex;
+                        })
+                        .execute(args)
+        );
     }
 
     @CommandLine.Spec
