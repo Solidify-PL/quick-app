@@ -29,9 +29,10 @@ public class TarGzTemplate implements Template {
 
     @Override
     public Manifest getManifest() throws IOException {
-        return Commons.OBJECT_MAPPER.readValue(
-                getEntryBytes(templateName + "/manifest.yaml"),
-                Manifest.class
+        String entry = templateName + "/manifest.yaml";
+        return Commons.loadManifest(
+                getEntryBytes(entry),
+                templateTarGzPackage.getAbsolutePath() + "!" + entry
         );
     }
 

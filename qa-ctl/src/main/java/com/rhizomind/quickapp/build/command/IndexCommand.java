@@ -1,5 +1,6 @@
 package com.rhizomind.quickapp.build.command;
 
+import com.rhizomind.quickapp.Commons;
 import com.rhizomind.quickapp.model.Manifest;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
@@ -10,7 +11,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
@@ -113,13 +113,10 @@ public class IndexCommand implements Callable<Integer> {
                     }
 
                     // Parsowanie zawartości jako YAML
-                    String yamlContent = baos.toString(StandardCharsets.UTF_8);
-                    try {
-                        return OBJECT_MAPPER.readValue(yamlContent, Manifest.class);
-                    } catch (IOException e) {
-                        throw new RuntimeException(
-                                "Invalid manifest file: " + tarGzFile.getAbsolutePath(), e);
-                    }
+                    return Commons.loadManifest(
+                            baos.toByteArray(),
+                            tarGzFile.getAbsolutePath() + "!" + entry.getName()
+                    );
                 }
             }
         }
